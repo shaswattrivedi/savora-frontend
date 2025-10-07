@@ -1,0 +1,58 @@
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+
+const HomeCollections = ({ collections = [] }) => {
+  if (!collections.length) {
+    return null;
+  }
+
+  return (
+    <section className="section home-collections">
+      <div className="home-section__header">
+        <h2 className="home-section__title">Featured collections</h2>
+        <p className="home-section__subtitle">
+          Seasonal comfort food, weekend baking projects, and one-pan dinners picked by our editors.
+        </p>
+      </div>
+      <div className="home-collections__grid">
+        {collections.map((collection) => (
+          <article key={collection._id || collection.title} className="home-collections__card">
+            <img src={collection.imageUrl} alt={collection.title} loading="lazy" />
+            <div className="home-collections__content">
+              {collection.subtitle && (
+                <span className="home-collections__eyebrow">{collection.subtitle}</span>
+              )}
+              <h3>{collection.title}</h3>
+              {collection.description && <p>{collection.description}</p>}
+              {collection.ctaHref && (
+                <Link to={collection.ctaHref} className="home-collections__cta">
+                  {collection.ctaLabel || "Explore"}
+                </Link>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+HomeCollections.propTypes = {
+  collections: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      title: PropTypes.string.isRequired,
+      subtitle: PropTypes.string,
+      description: PropTypes.string,
+      imageUrl: PropTypes.string.isRequired,
+      ctaLabel: PropTypes.string,
+      ctaHref: PropTypes.string,
+    })
+  ),
+};
+
+HomeCollections.defaultProps = {
+  collections: [],
+};
+
+export default HomeCollections;

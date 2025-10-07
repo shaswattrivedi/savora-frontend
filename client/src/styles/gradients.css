@@ -1,0 +1,52 @@
+:root {
+  --gradient-sunset: linear-gradient(130deg, var(--savora-mint) 0%, var(--savora-sea) 42%, var(--savora-coral) 100%);
+  --gradient-amber: linear-gradient(135deg, var(--savora-coral) 0%, var(--savora-peach) 100%);
+  --gradient-stone: linear-gradient(150deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.82) 100%);
+  --gradient-sage: linear-gradient(140deg, rgba(62, 180, 137, 0.25) 0%, rgba(62, 180, 137, 0) 70%);
+  --gradient-charcoal: linear-gradient(140deg, rgba(28, 37, 65, 0.95) 0%, rgba(47, 59, 102, 0.8) 100%);
+  --gradient-rust: linear-gradient(145deg, rgba(62, 180, 137, 0.65) 0%, rgba(255, 107, 107, 0.65) 100%);
+  --gradient-search: linear-gradient(90deg, #7fd9ba 0%, #b2f0d7 100%);
+  --gradient-search-hover: linear-gradient(90deg, #75cfb0 0%, #a3e7cd 100%);
+  --gradient-category: var(--gradient-search);
+  --gradient-category-hover: var(--gradient-search-hover);
+
+  --gradient-dawn: linear-gradient(135deg, #e0f6f1 0%, #fff6f4 100%);
+  --gradient-mint: linear-gradient(135deg, #c8f5e7 0%, #f2fffd 50%, #ffe6e3 100%);
+  --gradient-dusk: linear-gradient(145deg, rgba(28, 37, 65, 0.88), rgba(47, 59, 102, 0.78));
+}
+
+.gradient-sunset {
+  background: var(--gradient-sunset);
+}
+
+.gradient-amber {
+  background: var(--gradient-amber);
+}
+
+.gradient-stone {
+  background: var(--gradient-stone);
+}
+
+.gradient-sage {
+  background: var(--gradient-sage);
+}
+
+.gradient-charcoal {
+  background: var(--gradient-charcoal);
+}
+
+.gradient-rust {
+  background: var(--gradient-rust);
+}
+
+.gradient-dawn {
+  background: var(--gradient-dawn);
+}
+
+.gradient-mint {
+  background: var(--gradient-mint);
+}
+
+.gradient-dusk {
+  background: var(--gradient-dusk);
+}
