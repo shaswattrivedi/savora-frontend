@@ -51,6 +51,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-weight: 700;
   margin-bottom: 0.2rem;
   text-align: center;
 }
@@ -75,6 +76,12 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--savora-navy);
 }
 
 .input-glass {
