@@ -1508,7 +1508,9 @@ button, input, select, textarea {
 }
 
 .recipe-detail__card--steps,
-.recipe-detail__card--ingredients {
+.recipe-detail__card--ingredients,
+.recipe-detail__card--nutrition,
+.recipe-detail__card--reviews {
   flex-direction: column;
   align-items: stretch;
   gap: clamp(1rem, 2.4vw, 1.6rem);
@@ -1518,12 +1520,18 @@ button, input, select, textarea {
 .recipe-detail__card--steps .recipe-detail__card-header,
 .recipe-detail__card--steps .recipe-detail__card-body,
 .recipe-detail__card--ingredients .recipe-detail__card-header,
-.recipe-detail__card--ingredients .recipe-detail__card-body {
+.recipe-detail__card--ingredients .recipe-detail__card-body,
+.recipe-detail__card--nutrition .recipe-detail__card-header,
+.recipe-detail__card--nutrition .recipe-detail__card-body,
+.recipe-detail__card--reviews .recipe-detail__card-header,
+.recipe-detail__card--reviews .recipe-detail__card-body {
   width: 100%;
 }
 
 .recipe-detail__card--steps .recipe-detail__card-body,
-.recipe-detail__card--ingredients .recipe-detail__card-body {
+.recipe-detail__card--ingredients .recipe-detail__card-body,
+.recipe-detail__card--nutrition .recipe-detail__card-body,
+.recipe-detail__card--reviews .recipe-detail__card-body {
   align-items: center;
 }
 
@@ -1560,8 +1568,43 @@ button, input, select, textarea {
 }
 
 .recipe-ingredients__content li {
-  font-size: clamp(1rem, 2.2vw, 1.2rem);
-  line-height: 1.65;
+  font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+  line-height: 1.78;
+}
+
+.recipe-nutrition__content {
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+}
+
+.recipe-nutrition__content p {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+.recipe-reviews__content {
+  align-items: stretch;
+  gap: clamp(1rem, 2.4vw, 1.5rem);
+}
+
+.recipe-reviews__content > p {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+  line-height: 1.7;
+  text-align: center;
+  color: rgba(28, 37, 65, 0.76);
+}
+
+.recipe-reviews__content .reviews {
+  width: 100%;
+}
+
+.recipe-reviews__content .review-form {
+  width: min(100%, 520px);
+  margin: 0 auto;
 }
 
 .recipe-steps {

@@ -33,7 +33,7 @@ const transformExternalRecipeDetail = (recipe) => {
 
 const RecipeDetailPage = () => {
   const { id } = useParams();
-  const { user, token } = useAuth();
+  const { user, token, setUser } = useAuth();
   const { addToast } = useToast();
 
   const [recipe, setRecipe] = useState(null);
@@ -41,6 +41,7 @@ const RecipeDetailPage = () => {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const [isFavourite, setIsFavourite] = useState(false);
 
   const ingredientList = Array.isArray(recipe?.ingredients) ? recipe.ingredients : [];
   const stepList = Array.isArray(recipe?.steps) ? recipe.steps : [];
@@ -49,8 +50,8 @@ const RecipeDetailPage = () => {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const response = await apiRequest(`/recipes/${id}`);
-        setRecipe({ ...response.recipe, reviews: response.recipe.reviews || [] });
+  const response = await apiRequest(`/recipes/${id}`);
+  setRecipe({ ...response.recipe, reviews: response.recipe.reviews || [] });
       } catch (error) {
         if (error.status === 404) {
           try {
@@ -85,8 +86,19 @@ const RecipeDetailPage = () => {
     }
   }, [activeStepIndex, totalSteps]);
 
+  useEffect(() => {
+    if (!recipe || recipe.isExternal || !user) {
+      setIsFavourite(false);
+      return;
+    }
+
+    const favouriteIds = new Set(
+      (user.favorites || []).map((fav) => (typeof fav === "string" ? fav : fav?._id)).filter(Boolean)
+    );
+    setIsFavourite(favouriteIds.has(recipe._id));
+  }, [recipe?._id, recipe?.isExternal, user]);
+
   const currentStep = totalSteps ? stepList[activeStepIndex] : null;
-  const stepProgressLabel = totalSteps ? `Step ${activeStepIndex + 1} of ${totalSteps}` : "Steps coming soon";
   const isPrevDisabled = totalSteps <= 1 || activeStepIndex === 0;
   const isNextDisabled = totalSteps <= 1 || activeStepIndex === totalSteps - 1;
 
@@ -126,20 +138,72 @@ const RecipeDetailPage = () => {
     }
   };
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: recipe.title,
-          text: "Check out this Savora recipe!",
-          url: window.location.href,
-        });
-      } catch (error) {
-        addToast("Share cancelled", "info");
+  const handleToggleFavourite = async () => {
+    if (!user) {
+      addToast("Login to save favourites", "warning");
+      return;
+    }
+
+    if (!recipe) {
+      addToast("Recipe details are still loading.", "info");
+      return;
+    }
+
+    if (!recipe?._id) {
+      addToast("We can't save this recipe just yet.", "info");
+      return;
+    }
+
+    if (recipe?.isExternal) {
+      addToast("Favourites are only available for Savora community recipes.", "info");
+      return;
+    }
+
+    try {
+      const response = await apiRequest(`/recipes/${id}/bookmark`, {
+        method: "POST",
+        token,
+      });
+
+      setIsFavourite((prev) => !prev);
+
+      if (response?.bookmarksCount !== undefined) {
+        setRecipe((previous) =>
+          previous ? { ...previous, bookmarksCount: response.bookmarksCount } : previous
+        );
       }
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      addToast("Link copied to clipboard", "success");
+
+      const currentFavorites = user.favorites || [];
+      const favouriteIds = currentFavorites
+        .map((fav) => (typeof fav === "string" ? fav : fav?._id))
+        .filter(Boolean);
+      const hasFavourite = favouriteIds.includes(recipe._id);
+
+      let nextFavorites;
+      if (hasFavourite) {
+        nextFavorites = currentFavorites.filter(
+          (fav) => (typeof fav === "string" ? fav : fav?._id) !== recipe._id
+        );
+      } else {
+        nextFavorites = [
+          ...currentFavorites,
+          {
+            _id: recipe._id,
+            title: recipe.title,
+            cuisineType: recipe.cuisineType,
+            avgRating: recipe.avgRating,
+            imageUrl: recipe.imageUrl,
+          },
+        ];
+      }
+
+      setUser({ ...user, favorites: nextFavorites });
+
+      if (response?.message) {
+        addToast(response.message, "success");
+      }
+    } catch (error) {
+      addToast(error.message || "Could not update favourites", "error");
     }
   };
 
@@ -197,8 +261,20 @@ const RecipeDetailPage = () => {
             <a href="#ingredients" className="btn btn--primary">
               Start cooking
             </a>
-            <button type="button" className="btn btn--secondary" onClick={handleShare}>
-              Share recipe
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={handleToggleFavourite}
+              aria-pressed={isFavourite}
+              title={
+                recipe.isExternal
+                  ? "Imported recipes can't be saved yet."
+                  : isFavourite
+                    ? "Remove this recipe from your favourites"
+                    : "Add this recipe to your favourites"
+              }
+            >
+              {isFavourite ? "Remove from favourites" : "Add to favourites"}
             </button>
           </div>
         </div>
@@ -232,6 +308,7 @@ const RecipeDetailPage = () => {
             </div>
           </div>
         </article>
+
         <article className="panel recipe-detail__card recipe-detail__card--steps">
           <div className="recipe-detail__card-header">
             <h2>Steps</h2>
@@ -248,12 +325,14 @@ const RecipeDetailPage = () => {
                 >
                   <span aria-hidden="true">‹</span>
                 </button>
+
                 <div className="recipe-detail__panel-content recipe-steps__content" aria-live="polite" aria-atomic="true">
                   <div className="recipe-steps__header">
                     <span className="recipe-steps__badge">Step {activeStepIndex + 1}</span>
                   </div>
                   <p className="recipe-steps__instruction">{currentStep}</p>
                 </div>
+
                 <button
                   type="button"
                   className="recipe-steps__arrow recipe-steps__arrow--next"
@@ -269,14 +348,17 @@ const RecipeDetailPage = () => {
             )}
           </div>
         </article>
-        <article className="panel recipe-detail__card">
+
+        <article className="panel recipe-detail__card recipe-detail__card--nutrition">
           <div className="recipe-detail__card-header">
             <h2>Nutrition</h2>
           </div>
           <div className="recipe-detail__card-body">
-            <p>
-              Savora creators can add nutrition details soon. For now, prioritize fresh ingredients and mindful portions.
-            </p>
+            <div className="recipe-detail__panel-content recipe-nutrition__content">
+              <p>
+                Savora creators can add nutrition details soon. For now, prioritize fresh ingredients and mindful portions.
+              </p>
+            </div>
           </div>
         </article>
       </section>
@@ -286,44 +368,45 @@ const RecipeDetailPage = () => {
           <h2>Reviews</h2>
         </div>
         <div className="recipe-detail__card-body recipe-detail__card-body--reviews">
-          {recipe.isExternal ? (
-            <p>
-              Reviews aren&apos;t available for imported recipes yet, but you can still enjoy the steps straight from Chef
-              {" "}
-              {externalChefName}.
-            </p>
-          ) : (
-            <>
-              <div className="reviews">
-                {recipe.reviews?.length ? (
-                  recipe.reviews.map((review) => (
-                    <div key={review._id} className="reviews__item">
-                      <div className="reviews__header">
-                        <strong>{review.user?.name || "Savora Member"}</strong>
-                        <span>★ {review.rating}</span>
+          <div className="recipe-detail__panel-content recipe-reviews__content">
+            {recipe.isExternal ? (
+              <p>
+                Reviews aren&apos;t available for imported recipes yet, but you can still enjoy the steps straight from Chef {" "}
+                {externalChefName}.
+              </p>
+            ) : (
+              <>
+                <div className="reviews">
+                  {recipe.reviews?.length ? (
+                    recipe.reviews.map((review) => (
+                      <div key={review._id} className="reviews__item">
+                        <div className="reviews__header">
+                          <strong>{review.user?.name || "Savora Member"}</strong>
+                          <span>★ {review.rating}</span>
+                        </div>
+                        <p>{review.comment}</p>
                       </div>
-                      <p>{review.comment}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p>Be the first to review this recipe.</p>
-                )}
-              </div>
+                    ))
+                  ) : (
+                    <p>Be the first to review this recipe.</p>
+                  )}
+                </div>
 
-              <form className="review-form" onSubmit={handleReviewSubmit}>
-                <h3>Rate this recipe</h3>
-                <RatingStars value={rating} onChange={setRating} />
-                <textarea
-                  placeholder="Share your tips or tweaks"
-                  value={comment}
-                  onChange={(event) => setComment(event.target.value)}
-                />
-                <button type="submit" className="btn btn--primary">
-                  Submit review
-                </button>
-              </form>
-            </>
-          )}
+                <form className="review-form" onSubmit={handleReviewSubmit}>
+                  <h3>Rate this recipe</h3>
+                  <RatingStars value={rating} onChange={setRating} />
+                  <textarea
+                    placeholder="Share your tips or tweaks"
+                    value={comment}
+                    onChange={(event) => setComment(event.target.value)}
+                  />
+                  <button type="submit" className="btn btn--primary">
+                    Submit review
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
         </div>
       </section>
     </div>
