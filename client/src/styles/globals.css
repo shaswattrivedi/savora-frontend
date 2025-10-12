@@ -340,7 +340,8 @@ button, input, select, textarea {
   gap: 1.2rem;
 }
 
-.navbar__link {
+.navbar__link,
+.navbar__link:visited {
   display: inline-flex;
   align-items: center;
   font-weight: 600;
@@ -409,7 +410,10 @@ button, input, select, textarea {
   filter: brightness(1.08);
 }
 
-.navbar__link:hover {
+.navbar__link:hover,
+.navbar__link:focus,
+.navbar__link:focus-visible,
+.navbar__link:active {
   color: var(--color-primary);
   text-decoration: none;
 }
