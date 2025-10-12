@@ -262,8 +262,6 @@ const DEFAULT_HOME_CONTENT = {
       tag: "Editor’s pick",
       meta: {
         Cuisine: "Mediterranean",
-        Difficulty: "Easy",
-        Serves: "4",
       },
     },
     {
@@ -292,8 +290,6 @@ const DEFAULT_HOME_CONTENT = {
       tag: "Quick crowd-pleasers",
       meta: {
         Cuisine: "Latin American",
-        Time: "25 mins",
-        Serves: "4",
       },
     },
   ],

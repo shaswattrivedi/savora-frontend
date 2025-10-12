@@ -33,7 +33,6 @@ const HomeHero = ({ slides = [], searchValue, onSearchChange, onSearchSubmit }) 
   const description = activeSlide.description || activeSlide.subtitle || activeSlide.summary || "";
   const ctaHref = activeSlide.ctaHref || (activeSlide._id ? `/recipes/${activeSlide._id}` : "/recipes");
   const ctaLabel = activeSlide.ctaLabel || "View recipe";
-  const metaEntries = Object.entries(activeSlide.meta || {});
   const heroImage = selectRecipeImage(
     [activeSlide.imageUrl, activeSlide.image, activeSlide.media?.imageUrl],
     {
@@ -95,13 +94,6 @@ const HomeHero = ({ slides = [], searchValue, onSearchChange, onSearchSubmit }) 
           </Link>
         </div>
 
-        {!!metaEntries.length && (
-          <div className="home-hero__stats">
-            {metaEntries.map(([key, value]) => (
-              <span key={key}>{value}</span>
-            ))}
-          </div>
-        )}
       </div>
 
       <div className="home-hero__media">
@@ -118,19 +110,6 @@ const HomeHero = ({ slides = [], searchValue, onSearchChange, onSearchSubmit }) 
           }
         />
       </div>
-
-      <div className="home-hero__dots">
-        {slides.map((slide, index) => (
-          <button
-            key={slide._id || slide.title || index}
-            type="button"
-            className={`home-hero__dot ${index === activeIndex ? "is-active" : ""}`}
-            onClick={() => setActiveIndex(index)}
-            aria-label={`Show slide ${index + 1}`}
-          />
-        ))}
-      </div>
-
       <button
         type="button"
         className="home-hero__arrow home-hero__arrow--next"
