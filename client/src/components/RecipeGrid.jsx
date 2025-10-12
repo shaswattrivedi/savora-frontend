@@ -9,7 +9,12 @@ const RecipeGrid = ({ recipes, emptyMessage = "No recipes match your filters yet
   return (
     <div className="recipe-grid">
       {recipes.map((recipe) => (
-        <RecipeCard key={recipe._id} recipe={recipe} onBookmarkToggle={onBookmarkToggle} />
+        <RecipeCard
+          key={recipe._id}
+          recipe={recipe}
+          onBookmarkToggle={onBookmarkToggle}
+          showBadge={false}
+        />
       ))}
     </div>
   );

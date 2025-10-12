@@ -428,28 +428,8 @@ const HomePage = () => {
       <section className="section">
         <div className="home-section__header">
           <h2 className="home-section__title">Latest from the community</h2>
-          <p className="home-section__subtitle">
-            Use filters to pinpoint exactly what you&apos;re craving or discover something new.
-          </p>
         </div>
         <RecipeFilters filters={filters} onChange={handleFilterChange} onSubmit={handleFilterSubmit} />
-
-        {usingExternal && !loading && (
-          <div className="external-results-banner">
-            <strong>Guest chef recipes</strong>
-            <span>
-              {externalMeta?.mode === "discover"
-                ? `Discovering ${externalMeta?.count || 0} featured dishes from our guest chefs.`
-                : `Showing ${externalMeta?.count || 0} matches for "${externalMeta?.query}" curated by our guest chefs.`}
-            </span>
-            {externalMeta?.featuredChefs?.length ? (
-              <span className="external-results-banner__chefs" aria-label="Guest chefs">
-                Featuring {externalMeta.featuredChefs.slice(0, 3).join(", ")}
-                {externalMeta.featuredChefs.length > 3 ? " and friends" : ""}
-              </span>
-            ) : null}
-          </div>
-        )}
 
         {loading ? (
           <div className="loader">Loading recipes...</div>
