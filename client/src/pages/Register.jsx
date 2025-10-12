@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Form from "../components/Form.jsx";
 import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
+import "../styles/register.css";
 
 const RegisterPage = () => {
   const { register } = useAuth();
@@ -38,59 +38,77 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="page page--center">
-      <Form
-        title="Create your Savora account"
-        subtitle="Share recipes and connect with food lovers."
-        onSubmit={handleSubmit}
-        footer={
+    <div className="page page--center auth-page">
+      <section className="auth-card">
+        <h1 className="auth-title">Create your Savora account</h1>
+        <p className="auth-desc">Share recipes and connect with food lovers.</p>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="auth-field">
+            <label htmlFor="register-name">Name</label>
+            <input
+              id="register-name"
+              name="name"
+              className="auth-input"
+              value={form.name}
+              onChange={handleChange}
+              required
+              placeholder="Priya Sharma"
+              autoComplete="name"
+            />
+          </div>
+          <div className="auth-field">
+            <label htmlFor="register-email">Email</label>
+            <input
+              id="register-email"
+              name="email"
+              className="auth-input"
+              type="email"
+              required
+              placeholder="you@example.com"
+              value={form.email}
+              onChange={handleChange}
+              autoComplete="email"
+            />
+          </div>
+          <div className="auth-field">
+            <label htmlFor="register-password">Password</label>
+            <input
+              id="register-password"
+              name="password"
+              className="auth-input"
+              type="password"
+              required
+              minLength={6}
+              placeholder="At least 6 characters"
+              value={form.password}
+              onChange={handleChange}
+              autoComplete="new-password"
+            />
+          </div>
+          <div className="auth-field">
+            <label htmlFor="register-confirm">Confirm password</label>
+            <input
+              id="register-confirm"
+              name="confirmPassword"
+              className="auth-input"
+              type="password"
+              required
+              value={form.confirmPassword}
+              onChange={handleChange}
+              autoComplete="new-password"
+            />
+          </div>
+
+          <button type="submit" className="btn btn--primary auth-submit" disabled={loading}>
+            {loading ? "Creating account..." : "Register"}
+          </button>
+        </form>
+        <footer className="auth-footer">
           <p>
             Already have an account? <Link to="/login">Log in</Link>
           </p>
-        }
-      >
-        <label>
-          Name
-          <input name="name" value={form.name} onChange={handleChange} required placeholder="Priya Sharma" />
-        </label>
-        <label>
-          Email
-          <input
-            name="email"
-            type="email"
-            required
-            placeholder="you@example.com"
-            value={form.email}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Password
-          <input
-            name="password"
-            type="password"
-            required
-            minLength={6}
-            placeholder="At least 6 characters"
-            value={form.password}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Confirm password
-          <input
-            name="confirmPassword"
-            type="password"
-            required
-            value={form.confirmPassword}
-            onChange={handleChange}
-          />
-        </label>
-
-        <button type="submit" className="btn btn--primary" disabled={loading}>
-          {loading ? "Creating account..." : "Register"}
-        </button>
-      </Form>
+        </footer>
+      </section>
     </div>
   );
 };

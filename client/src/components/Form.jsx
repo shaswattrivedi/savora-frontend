@@ -1,15 +1,15 @@
 import PropTypes from "prop-types";
 
 const Form = ({ title, subtitle, children, footer, onSubmit }) => (
-  <section className="form-shell gradient-mint">
-    <div className="form-shell__header">
+  <section className="form-shell">
+    <header className="form-shell__header">
       <h2>{title}</h2>
       {subtitle && <p>{subtitle}</p>}
-    </div>
+    </header>
     <form className="form-shell__form" onSubmit={onSubmit}>
       {children}
     </form>
-    {footer && <div className="form-shell__footer">{footer}</div>}
+    {footer && <footer className="form-shell__footer">{footer}</footer>}
   </section>
 );
 
