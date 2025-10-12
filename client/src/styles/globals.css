@@ -548,6 +548,8 @@ button, input, select, textarea {
 
 .navbar__search--desktop {
   display: flex;
+  width: min(420px, 100%);
+  justify-self: center;
 }
 
 .navbar__search--mobile {
