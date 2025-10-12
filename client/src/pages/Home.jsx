@@ -21,6 +21,8 @@ const initialFilters = {
 
 const DEFAULT_DISCOVER_QUERY = "a";
 
+let homePageCache = null;
+
 const transformExternalRecipe = (recipe) => {
   const imageContext = {
     title: recipe.title,
@@ -111,25 +113,42 @@ const HomePage = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [filters, setFilters] = useState(initialFilters);
-  const [recipes, setRecipes] = useState([]);
-  const [featured, setFeatured] = useState([]);
-  const [homeContent, setHomeContent] = useState({
-    hero: [],
-    collections: [],
-    guides: [],
-  });
-  const [contributors, setContributors] = useState([]);
-  const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
-  const [loading, setLoading] = useState(true);
-  const [usingExternal, setUsingExternal] = useState(false);
-  const [externalMeta, setExternalMeta] = useState(null);
-  const searchParamsKeyRef = useRef("");
+  const cachedState = homePageCache;
+  const [filters, setFilters] = useState(cachedState?.filters ?? initialFilters);
+  const [recipes, setRecipes] = useState(cachedState?.recipes ?? []);
+  const [featured, setFeatured] = useState(cachedState?.featured ?? []);
+  const [homeContent, setHomeContent] = useState(
+    cachedState?.homeContent ?? {
+      hero: [],
+      collections: [],
+      guides: [],
+    }
+  );
+  const [contributors, setContributors] = useState(cachedState?.contributors ?? []);
+  const [pagination, setPagination] = useState(cachedState?.pagination ?? { page: 1, totalPages: 1 });
+  const [loading, setLoading] = useState(!cachedState);
+  const [usingExternal, setUsingExternal] = useState(cachedState?.usingExternal ?? false);
+  const [externalMeta, setExternalMeta] = useState(cachedState?.externalMeta ?? null);
+  const [refreshing, setRefreshing] = useState(false);
+  const hasCacheRef = useRef(Boolean(cachedState));
+  const searchParamsKeyRef = useRef(null);
 
   const loadRecipes = async (override = {}) => {
-    setLoading(true);
+    const shouldShowFullLoader = !hasCacheRef.current || recipes.length === 0;
+    if (shouldShowFullLoader) {
+      setLoading(true);
+      setRefreshing(false);
+    } else {
+      setRefreshing(true);
+    }
     setExternalMeta(null);
     setUsingExternal(false);
+
+    const finishLoading = () => {
+      hasCacheRef.current = true;
+      setLoading(false);
+      setRefreshing(false);
+    };
 
     const mergedFilters = { ...filters, ...override };
     const nextPage = override.page ?? pagination.page ?? 1;
@@ -185,7 +204,7 @@ const HomePage = () => {
 
     if (externalOutcome.handled) {
       if (externalOutcome.hasResults || trimmedSearch) {
-        setLoading(false);
+        finishLoading();
         return;
       }
       // If no results for discover mode, fall back to internal recipes below.
@@ -214,7 +233,7 @@ const HomePage = () => {
       setRecipes([]);
       setPagination({ page: 1, totalPages: 1 });
     } finally {
-      setLoading(false);
+      finishLoading();
     }
   };
 
@@ -363,6 +382,19 @@ const HomePage = () => {
 
   const trendingRecipes = usingExternal ? recipes.slice(0, 6) : featured;
 
+  useEffect(() => {
+    homePageCache = {
+      filters,
+      recipes,
+      featured,
+      homeContent,
+      contributors,
+      pagination,
+      usingExternal,
+      externalMeta,
+    };
+  }, [filters, recipes, featured, homeContent, contributors, pagination, usingExternal, externalMeta]);
+
   return (
     <div className="page home-layout">
       <HomeHero
@@ -415,14 +447,21 @@ const HomePage = () => {
         {loading ? (
           <div className="loader">Loading recipes...</div>
         ) : (
-          <RecipeGrid
-            recipes={recipes}
-            emptyMessage={
-              usingExternal
-                ? "No recipes found on Savora or TheMealDB yet. Try a different search."
-                : undefined
-            }
-          />
+          <>
+            {refreshing && (
+              <div className="loader loader--inline" aria-live="polite">
+                Updating recipes…
+              </div>
+            )}
+            <RecipeGrid
+              recipes={recipes}
+              emptyMessage={
+                usingExternal
+                  ? "No recipes found on Savora or TheMealDB yet. Try a different search."
+                  : undefined
+              }
+            />
+          </>
         )}
 
         {!usingExternal && (

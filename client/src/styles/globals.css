@@ -199,6 +199,37 @@ button, input, select, textarea {
   color: var(--color-primary);
 }
 
+.loader--inline {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.loader--inline::before {
+  content: "";
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: loader-pulse 1.1s ease-in-out infinite alternate;
+}
+
+@keyframes loader-pulse {
+  from {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
 .navbar {
   position: sticky;
   top: 0;
