@@ -84,20 +84,45 @@ const ProfilePage = () => {
       )}
 
       <Modal open={isModalOpen} title="Edit profile" onClose={() => setIsModalOpen(false)}>
+        <p className="profile-form-desc">Refresh your name, bio, and avatar to keep your Savora profile feeling personal.</p>
         <form className="profile-form" onSubmit={handleProfileSave}>
-          <label>
-            Name
-            <input name="name" value={editForm.name} onChange={handleEditChange} required />
-          </label>
-          <label>
-            Bio
-            <textarea name="bio" value={editForm.bio} onChange={handleEditChange} rows={3} />
-          </label>
-          <label>
-            Avatar URL
-            <input name="avatarUrl" type="url" value={editForm.avatarUrl} onChange={handleEditChange} />
-          </label>
-          <button type="submit" className="btn btn--primary">
+          <div className="profile-form-group">
+            <label htmlFor="profile-name">Name</label>
+            <input
+              id="profile-name"
+              name="name"
+              className="profile-input"
+              value={editForm.name}
+              onChange={handleEditChange}
+              required
+              autoComplete="name"
+            />
+          </div>
+          <div className="profile-form-group">
+            <label htmlFor="profile-bio">Bio</label>
+            <textarea
+              id="profile-bio"
+              name="bio"
+              className="profile-input"
+              value={editForm.bio}
+              onChange={handleEditChange}
+              rows={3}
+              placeholder="Share a little about your food journey."
+            />
+          </div>
+          <div className="profile-form-group">
+            <label htmlFor="profile-avatar">Avatar URL</label>
+            <input
+              id="profile-avatar"
+              name="avatarUrl"
+              className="profile-input"
+              type="url"
+              value={editForm.avatarUrl}
+              onChange={handleEditChange}
+              placeholder="https://"
+            />
+          </div>
+          <button type="submit" className="btn btn--primary profile-form-submit">
             Save changes
           </button>
         </form>

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 const ProfileCard = ({ user, onEdit }) => (
-  <section className="profile-card gradient-coral">
+  <section className="profile-card">
     <div className="profile-card__avatar">
       <img src={user.avatarUrl} alt={`${user.name} avatar`} />
     </div>
