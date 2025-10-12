@@ -1,5 +1,5 @@
 :root {
-  --gradient-sunset: linear-gradient(130deg, var(--savora-mint) 0%, var(--savora-sea) 42%, var(--savora-coral) 100%);
+  --gradient-sunset: linear-gradient(130deg, #c8f6e8 0%, #bdf1ec 45%, #ffd4c9 70%, #ffb7aa 100%);
   --gradient-amber: linear-gradient(135deg, var(--savora-coral) 0%, var(--savora-peach) 100%);
   --gradient-stone: linear-gradient(150deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.82) 100%);
   --gradient-sage: linear-gradient(140deg, rgba(62, 180, 137, 0.25) 0%, rgba(62, 180, 137, 0) 70%);

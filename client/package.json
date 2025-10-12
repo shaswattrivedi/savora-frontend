@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "seed:home": "npm --prefix server run seed:home"
+    "preview": "vite preview"
   },
   "dependencies": {
     "prop-types": "^15.8.1",

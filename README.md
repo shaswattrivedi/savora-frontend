@@ -1,26 +1,16 @@
 # Savora – Where every recipe tells a story
 
-Savora is a full-stack, responsive recipe sharing platform built with the mandated MERN syllabus stack:
+Savora is now a **100% frontend** React experience you can run locally with zero Docker, MongoDB, or backend services. The entire application is powered by a browser-based mock API that persists data in `localStorage`, so you still get authentication, favourites, reviews, and admin tooling without leaving the comfort of the client.
 
-- **Frontend:** React, modern HTML5, CSS3 (no UI frameworks, pure gradients)
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB via Mongoose
-- **Auth:** JWT with HTTP-only tokens and bcrypt password hashing
+## ✨ Frontend Highlights
 
-The application lets passionate cooks create, share, and discover recipes across world cuisines while maintaining a clean, food-inspired aesthetic.
-
-## ✨ Feature Highlights
-
-- Secure JWT authentication with profile management
-- Create, edit, delete, and browse recipes with cuisine & diet filters
-- Interactive search with pagination-ready results
-- Bookmark (favorites) system and community-powered ratings + reviews
-- Trending carousel, featured collections, and top contributors board
-- Live recipe search sourcing data from TheMealDB via the backend proxy
-- Admin tooling to moderate recipes and manage user accounts
-- About & Contact pages with contact form validation
-- Toast notifications, modals, and accessible color-contrast adherence
-- Responsive CSS Grid/Flexbox layouts for phones, tablets, and desktops
+- React 18 + Vite, modern HTML5 + vanilla CSS3 gradients (no component libraries)
+- Local mock API with persistent data, seeded with curated recipes and users
+- Auth, bookmarks, reviews, and admin dashboards simulated entirely in-browser
+- Intelligent recipe filters (search, cuisine, diet, category, sorting) with pagination
+- Hero carousel, featured collections, quick picks, community guides, and contributors spotlight
+- External inspiration feed backed by bundled Figma-style “imported” recipes
+- Fully responsive layouts built with CSS Grid/Flexbox and glassmorphism accents
 
 ## 🎨 Design System Cheat Sheet
 
@@ -43,74 +33,73 @@ savora/
 ├── client/          # React SPA (frontend)
 │   ├── public/
 │   └── src/
-├── server/          # Express API (backend)
 ├── README.md
 └── package.json
 ```
 
-See in-code comments for deeper explanations of each module.
+See in-code comments for deeper explanations of each module. The legacy Express backend has been removed from the toolchain; only the `client/` app is required to run Savora.
 
-## 🚀 Getting Started
+## 🚀 Getting Started (frontend only)
 
 ### 1. Prerequisites
 
 - Node.js ≥ 18
 - npm ≥ 9
-- MongoDB URI (Atlas or local), copied into `.env`
+- A modern browser (Chrome, Edge, Firefox, or Safari)
 
-### 2. Install Dependencies
+### 2. Install dependencies
 
 ```bash
-npm install --prefix server
 npm install --prefix client
 ```
 
-### 3. Environment Setup
-
-Copy the template and fill in your secrets:
+### 3. Run the development server
 
 ```bash
-cp server/.env.example server/.env
+npm run dev
 ```
 
-Update `MONGO_URI`, `JWT_SECRET`, and optional seed data.
+Visit **http://localhost:5173** to explore Savora. All data is persisted in your browser’s `localStorage`, so it survives page refreshes without any external services.
 
-### Optional: seed curated homepage content
-
-Populate the database with editorial recipes and homepage imagery:
+### 4. Build the production bundle
 
 ```bash
-npm run seed:home
+npm run build
+npm run preview
 ```
 
-### 4. Run the App (two terminals)
+The preview server also runs at `http://localhost:5173`.
 
-```bash
-npm run server
+## 🧪 Mock Accounts & Data
+
+The mock API seeds Savora with realistic content and example users. You can log in with these credentials or create new accounts via **Register**:
+
+| Role  | Email               | Password  |
+|-------|--------------------|-----------|
+| Admin | `ayesha@savora.dev` | `tastebud` |
+| User  | `mateo@savora.dev`  | `savora123` |
+
+All passwords are stored locally and never leave your browser. Sign out to switch between accounts, or register your own profile for testing.
+
+### Resetting the mock database
+
+Everything is stored under the key `savora_mock_db_v2`. To reset the app back to its initial state, open your browser devtools and run:
+
+```js
+localStorage.removeItem("savora_mock_db_v2");
 ```
 
-```bash
-npm run client
-```
-
-The frontend will launch on `http://localhost:5173` (Vite dev server), and the API on `http://localhost:5000`.
-
-### 5. Production Builds
-
-```bash
-npm run client:build
-npm run server:start
-```
+Refreshing the page will reseed the demo data.
 
 ## 🔗 External Integrations
 
-- The backend exposes `/api/external/recipes?search=<query>` and `/api/external/recipes/:id` which proxy and normalize data from [TheMealDB public API](https://www.themealdb.com/api.php), keeping API keys out of the browser while reusing Savora's design system on the frontend.
+- External recipes are now bundled with the frontend mock data—no network calls required—while staying faithful to the original Figma handoff.
 
 ## 🧪 Testing & Quality
 
-- API request/response validation ensures consistent error handling
 - Frontend form validation covers empty fields, email format, password length
 - Reusable toast notifications provide immediate feedback
+- Local mock API mirrors server responses so you can still exercise flows end-to-end
 
 Add your own Jest or Cypress suites on top of this scaffold as needed.
 
