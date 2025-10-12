@@ -10,6 +10,7 @@ import { apiRequest } from "../utils/api.js";
 import { useToast } from "../hooks/useToast.js";
 import { searchExternalRecipes } from "../api/externalRecipes.js";
 import { selectRecipeImage } from "../utils/imageFallbacks.js";
+import { getMockChefName } from "../utils/mockChefs.js";
 
 const initialFilters = {
   search: "",
@@ -24,6 +25,7 @@ const DEFAULT_DISCOVER_QUERY = "a";
 let homePageCache = null;
 
 const transformExternalRecipe = (recipe) => {
+  const chefName = getMockChefName(recipe.id || recipe.title);
   const imageContext = {
     title: recipe.title,
     cuisine: recipe.cuisine,
@@ -39,18 +41,20 @@ const transformExternalRecipe = (recipe) => {
     imageUrl,
     cuisineType: recipe.cuisine || recipe.category || "Global",
     category: recipe.category,
-  summary: recipe.instructions?.[0] || "Imported from TheMealDB to inspire your next meal.",
+    summary: recipe.instructions?.[0] || `Signature dish from Chef ${chefName}.`,
     cookingTime: null,
     avgRating: null,
-    createdBy: { name: "TheMealDB" },
+    createdBy: { name: chefName },
     isExternal: true,
   };
 };
 
 const createHeroSlidesFromExternal = (recipes) =>
   recipes.slice(0, 4).map((recipe) => {
+    const chefName = recipe.createdBy?.name || getMockChefName(recipe._id || recipe.title);
     const subtitleParts = [recipe.cuisineType, recipe.category].filter(Boolean);
-    const subtitle = subtitleParts.length ? subtitleParts.join(" • ") : "Curated by TheMealDB";
+    const subtitleBase = subtitleParts.length ? subtitleParts.join(" • ") : "Chef special";
+    const subtitle = `${subtitleBase} • Chef ${chefName}`;
     const heroImage = selectRecipeImage([recipe.imageUrl, recipe.image], {
       title: recipe.title,
       subtitle,
@@ -66,11 +70,11 @@ const createHeroSlidesFromExternal = (recipes) =>
       imageUrl: heroImage,
       ctaHref: `/recipes/${recipe._id}`,
       ctaLabel: "View recipe",
-      tag: recipe.cuisineType || "TheMealDB",
+      tag: recipe.cuisineType || "Guest chef",
       meta: {
         Cuisine: recipe.cuisineType || "Global",
         Category: recipe.category || "Dish",
-        Source: "Sourced via TheMealDB",
+        Source: `Chef ${chefName}`,
       },
     };
   });
@@ -380,7 +384,7 @@ const HomePage = () => {
       ? buildGuidesFromExternal(recipes)
       : homeContent.guides;
 
-  const trendingRecipes = usingExternal ? recipes.slice(0, 6) : featured;
+  const trendingRecipes = (usingExternal ? recipes : featured).slice(0, 4);
 
   useEffect(() => {
     homePageCache = {
@@ -413,7 +417,7 @@ const HomePage = () => {
         {trendingRecipes.length ? (
           <div className="home-trending__list">
             {trendingRecipes.map((recipe) => (
-              <RecipeCard key={recipe._id} recipe={recipe} />
+              <RecipeCard key={recipe._id} recipe={recipe} showBadge={false} />
             ))}
           </div>
         ) : (
@@ -432,12 +436,18 @@ const HomePage = () => {
 
         {usingExternal && !loading && (
           <div className="external-results-banner">
-            <strong>TheMealDB recipes</strong>
+            <strong>Guest chef recipes</strong>
             <span>
               {externalMeta?.mode === "discover"
-                ? `Discovering ${externalMeta?.count || 0} featured dishes from TheMealDB.`
-                : `Showing ${externalMeta?.count || 0} matches for "${externalMeta?.query}" from TheMealDB.`}
+                ? `Discovering ${externalMeta?.count || 0} featured dishes from our guest chefs.`
+                : `Showing ${externalMeta?.count || 0} matches for "${externalMeta?.query}" curated by our guest chefs.`}
             </span>
+            {externalMeta?.featuredChefs?.length ? (
+              <span className="external-results-banner__chefs" aria-label="Guest chefs">
+                Featuring {externalMeta.featuredChefs.slice(0, 3).join(", ")}
+                {externalMeta.featuredChefs.length > 3 ? " and friends" : ""}
+              </span>
+            ) : null}
           </div>
         )}
 
@@ -454,7 +464,7 @@ const HomePage = () => {
               recipes={recipes}
               emptyMessage={
                 usingExternal
-                  ? "No recipes found on Savora or TheMealDB yet. Try a different search."
+                  ? "No recipes found on Savora or from our guest chefs yet. Try a different search."
                   : undefined
               }
             />

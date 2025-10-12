@@ -4,23 +4,23 @@ import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
 import { apiRequest } from "../utils/api.js";
 import { applyRecipeImageFallback, getRecipeFallbackImage } from "../utils/imageFallbacks.js";
+import { getMockChefName } from "../utils/mockChefs.js";
 
-const RecipeCard = ({ recipe, onBookmarkToggle }) => {
+const RecipeCard = ({ recipe, onBookmarkToggle, showBadge = true }) => {
   const { user, token, refreshProfile } = useAuth();
   const { addToast } = useToast();
 
   const isExternal = Boolean(recipe.isExternal);
+  const chefName = recipe.createdBy?.name || (isExternal ? getMockChefName(recipe._id || recipe.title) : "Savora Chef");
   const description =
     recipe.summary ||
-    (isExternal
-      ? "Imported from TheMealDB to inspire your next meal."
-      : "A community favourite loved by Savora cooks.");
+    (isExternal ? `Signature dish from Chef ${chefName}.` : "A community favourite loved by Savora cooks.");
 
   const cuisineLabel = recipe.cuisineType || recipe.cuisine || recipe.category || "Savora";
   const timeLabel = recipe.cookingTime ? `${recipe.cookingTime} mins` : cuisineLabel;
   const ratingLabel =
     typeof recipe.avgRating === "number" ? recipe.avgRating.toFixed(1) : isExternal ? "–" : "0.0";
-  const authorLabel = recipe.createdBy?.name || (isExternal ? "TheMealDB" : "Savora Chef");
+  const authorLabel = chefName;
 
   const handleBookmark = async (event) => {
     event.preventDefault();
@@ -62,7 +62,7 @@ const RecipeCard = ({ recipe, onBookmarkToggle }) => {
             })
           }
         />
-        <span className="recipe-card__badge">{cuisineLabel}</span>
+        {showBadge && <span className="recipe-card__badge">{cuisineLabel}</span>}
       </div>
       <div className="recipe-card__content">
         <h3>{recipe.title}</h3>
@@ -102,6 +102,7 @@ RecipeCard.propTypes = {
     category: PropTypes.string,
   }).isRequired,
   onBookmarkToggle: PropTypes.func,
+  showBadge: PropTypes.bool,
 };
 
 export default RecipeCard;

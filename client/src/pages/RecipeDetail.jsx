@@ -6,24 +6,26 @@ import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
 import { getExternalRecipeById } from "../api/externalRecipes.js";
 import { applyRecipeImageFallback, getRecipeFallbackImage } from "../utils/imageFallbacks.js";
+import { getMockChefName } from "../utils/mockChefs.js";
 
 const transformExternalRecipeDetail = (recipe) => {
   const categoryTags = [recipe.category, recipe.cuisine].filter(Boolean);
+  const chefName = getMockChefName(recipe.id || recipe.title);
   return {
     _id: recipe.id,
     title: recipe.title,
-  imageUrl: recipe.image || recipe.imageUrl,
+    imageUrl: recipe.image || recipe.imageUrl,
     ingredients: recipe.ingredients || [],
     steps: recipe.instructions || [],
     summary:
       recipe.instructions?.[0] ||
-      `A ${recipe.cuisine || "flavourful"} favourite discovered through TheMealDB.`,
+      `Chef ${chefName} shares this ${recipe.cuisine || "flavourful"} favourite.`,
     cuisineType: recipe.cuisine || "Global",
     category: recipe.category,
     categoryTags,
     avgRating: null,
     cookingTime: null,
-    createdBy: { name: "TheMealDB" },
+    createdBy: { name: chefName },
     reviews: [],
     isExternal: true,
   };
@@ -122,6 +124,7 @@ const RecipeDetailPage = () => {
     );
   }
 
+  const externalChefName = recipe.createdBy?.name || getMockChefName(recipe._id || recipe.title);
   const timeLabel = recipe.cookingTime ? `${recipe.cookingTime} mins` : recipe.cuisineType || recipe.category || "Recipe";
   const ratingLabel = typeof recipe.avgRating === "number" ? recipe.avgRating.toFixed(1) : "–";
   const categoryLabel =
@@ -131,7 +134,7 @@ const RecipeDetailPage = () => {
   const summaryText =
     recipe.summary ||
     (recipe.isExternal
-      ? "This dish arrives courtesy of TheMealDB community."
+      ? `This dish arrives courtesy of Chef ${externalChefName}.`
       : "Savora chefs are still adding a summary for this recipe.");
   const ingredientList = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
   const stepList = Array.isArray(recipe.steps) ? recipe.steps : [];
@@ -201,7 +204,7 @@ const RecipeDetailPage = () => {
         {recipe.isExternal ? (
           <p className="empty-state">
             Reviews aren&apos;t available for imported recipes yet, but you can still enjoy the steps straight from
-            TheMealDB.
+            Chef {externalChefName}.
           </p>
         ) : (
           <>
