@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { applyRecipeImageFallback, getRecipeFallbackImage } from "../../utils/imageFallbacks.js";
 
 const HomeCollections = ({ collections = [] }) => {
   if (!collections.length) {
@@ -17,7 +18,25 @@ const HomeCollections = ({ collections = [] }) => {
       <div className="home-collections__grid">
         {collections.map((collection) => (
           <article key={collection._id || collection.title} className="home-collections__card">
-            <img src={collection.imageUrl} alt={collection.title} loading="lazy" />
+            <img
+              src={
+                collection.imageUrl ||
+                getRecipeFallbackImage({
+                  cuisine: collection.subtitle?.replace(/ cuisine$/i, ""),
+                  category: collection.category,
+                  title: collection.title,
+                })
+              }
+              alt={collection.title}
+              loading="lazy"
+              onError={(event) =>
+                applyRecipeImageFallback(event, {
+                  cuisine: collection.subtitle?.replace(/ cuisine$/i, ""),
+                  category: collection.category,
+                  title: collection.title,
+                })
+              }
+            />
             <div className="home-collections__content">
               {collection.subtitle && (
                 <span className="home-collections__eyebrow">{collection.subtitle}</span>

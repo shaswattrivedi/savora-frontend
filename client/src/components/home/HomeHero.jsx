@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { applyRecipeImageFallback, selectRecipeImage } from "../../utils/imageFallbacks.js";
 
 const HomeHero = ({ slides = [], searchValue, onSearchChange, onSearchSubmit }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -33,6 +34,18 @@ const HomeHero = ({ slides = [], searchValue, onSearchChange, onSearchSubmit }) 
   const ctaHref = activeSlide.ctaHref || (activeSlide._id ? `/recipes/${activeSlide._id}` : "/recipes");
   const ctaLabel = activeSlide.ctaLabel || "View recipe";
   const metaEntries = Object.entries(activeSlide.meta || {});
+  const heroImage = selectRecipeImage(
+    [activeSlide.imageUrl, activeSlide.image, activeSlide.media?.imageUrl],
+    {
+      title: activeSlide.title,
+      subtitle: activeSlide.subtitle,
+      description,
+      cuisine: activeSlide.cuisineType || activeSlide.meta?.Cuisine,
+      category: activeSlide.category || activeSlide.meta?.Category,
+      tags: activeSlide.tags,
+      meta: activeSlide.meta,
+    }
+  );
 
   const showPrevSlide = () => {
     setActiveIndex((current) => (current - 1 + slides.length) % slides.length);
@@ -92,7 +105,18 @@ const HomeHero = ({ slides = [], searchValue, onSearchChange, onSearchSubmit }) 
       </div>
 
       <div className="home-hero__media">
-        <img src={activeSlide.imageUrl} alt={activeSlide.title} loading="lazy" />
+        <img
+          src={heroImage}
+          alt={activeSlide.title}
+          loading="lazy"
+          onError={(event) =>
+            applyRecipeImageFallback(event, {
+              cuisine: activeSlide.cuisineType || activeSlide.meta?.Cuisine,
+              category: activeSlide.category || activeSlide.meta?.Category,
+              title: activeSlide.title,
+            })
+          }
+        />
       </div>
 
       <div className="home-hero__dots">

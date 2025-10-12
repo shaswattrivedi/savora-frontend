@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
 import { apiRequest } from "../utils/api.js";
+import { applyRecipeImageFallback, getRecipeFallbackImage } from "../utils/imageFallbacks.js";
 
 const RecipeCard = ({ recipe, onBookmarkToggle }) => {
   const { user, token, refreshProfile } = useAuth();
@@ -42,10 +43,25 @@ const RecipeCard = ({ recipe, onBookmarkToggle }) => {
     }
   };
 
+  const imageSrc =
+    recipe.imageUrl ||
+    getRecipeFallbackImage({ cuisine: recipe.cuisineType || recipe.cuisine, category: recipe.category, title: recipe.title });
+
   return (
     <Link to={`/recipes/${recipe._id}`} className="recipe-card">
       <div className="recipe-card__image-wrapper">
-        <img src={recipe.imageUrl} alt={recipe.title} loading="lazy" />
+        <img
+          src={imageSrc}
+          alt={recipe.title}
+          loading="lazy"
+          onError={(event) =>
+            applyRecipeImageFallback(event, {
+              cuisine: recipe.cuisineType || recipe.cuisine,
+              category: recipe.category,
+              title: recipe.title,
+            })
+          }
+        />
         <span className="recipe-card__badge">{cuisineLabel}</span>
       </div>
       <div className="recipe-card__content">

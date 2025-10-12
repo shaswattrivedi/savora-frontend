@@ -5,13 +5,14 @@ import { apiRequest } from "../utils/api.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
 import { getExternalRecipeById } from "../api/externalRecipes.js";
+import { applyRecipeImageFallback, getRecipeFallbackImage } from "../utils/imageFallbacks.js";
 
 const transformExternalRecipeDetail = (recipe) => {
   const categoryTags = [recipe.category, recipe.cuisine].filter(Boolean);
   return {
     _id: recipe.id,
     title: recipe.title,
-    imageUrl: recipe.image,
+  imageUrl: recipe.image || recipe.imageUrl,
     ingredients: recipe.ingredients || [],
     steps: recipe.instructions || [],
     summary:
@@ -134,6 +135,9 @@ const RecipeDetailPage = () => {
       : "Savora chefs are still adding a summary for this recipe.");
   const ingredientList = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
   const stepList = Array.isArray(recipe.steps) ? recipe.steps : [];
+  const recipeImage =
+    recipe.imageUrl ||
+    getRecipeFallbackImage({ cuisine: recipe.cuisineType || recipe.cuisine, category: recipe.category, title: recipe.title });
 
   return (
     <div className="page recipe-detail">
@@ -153,7 +157,17 @@ const RecipeDetailPage = () => {
           </div>
         </div>
         <div className="recipe-detail__image">
-          <img src={recipe.imageUrl} alt={recipe.title} />
+          <img
+            src={recipeImage}
+            alt={recipe.title}
+            onError={(event) =>
+              applyRecipeImageFallback(event, {
+                cuisine: recipe.cuisineType || recipe.cuisine,
+                category: recipe.category,
+                title: recipe.title,
+              })
+            }
+          />
         </div>
       </header>
 

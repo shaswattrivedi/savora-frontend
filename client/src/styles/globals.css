@@ -595,6 +595,28 @@ button, input, select, textarea {
   pointer-events: none;
 }
 
+.about-cta .btn--primary {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.88));
+  color: var(--savora-navy);
+  border: 1px solid rgba(47, 59, 102, 0.08);
+  box-shadow: 0 18px 36px rgba(28, 37, 65, 0.16);
+}
+
+.about-cta .btn--primary:hover {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(247, 247, 247, 0.94));
+  color: var(--savora-navy);
+  box-shadow: 0 22px 44px rgba(28, 37, 65, 0.18);
+}
+
+.about-cta .btn--primary:active {
+  background:
+    linear-gradient(135deg, rgba(244, 244, 244, 1), rgba(232, 232, 232, 0.94));
+  color: var(--savora-navy);
+  box-shadow: 0 14px 28px rgba(28, 37, 65, 0.18);
+}
+
 .hero__content {
   position: relative;
   z-index: 1;
@@ -1260,13 +1282,15 @@ button, input, select, textarea {
 
 .about-stat {
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.78);
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86));
   padding: 1.4rem 1.5rem;
   box-shadow: 0 16px 32px rgba(28, 37, 65, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.4);
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
 .about-stat strong {
@@ -1287,6 +1311,11 @@ button, input, select, textarea {
   color: var(--color-muted);
 }
 
+.about-stat:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 42px rgba(28, 37, 65, 0.18);
+}
+
 .about-hero__media {
   display: flex;
   justify-content: center;
@@ -1294,12 +1323,19 @@ button, input, select, textarea {
 }
 
 .about-hero__card {
-  background: rgba(255, 255, 255, 0.88);
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.88));
   border-radius: var(--radius-lg);
   padding: 2.2rem;
   box-shadow: 0 24px 44px rgba(28, 37, 65, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.46);
   max-width: 340px;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+}
+
+.about-hero__card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 52px rgba(28, 37, 65, 0.22);
 }
 
 .about-hero__card h2 {

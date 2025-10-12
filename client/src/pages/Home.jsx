@@ -10,6 +10,7 @@ import HomeGuides from "../components/home/HomeGuides.jsx";
 import { apiRequest } from "../utils/api.js";
 import { useToast } from "../hooks/useToast.js";
 import { searchExternalRecipes } from "../api/externalRecipes.js";
+import { selectRecipeImage } from "../utils/imageFallbacks.js";
 
 const initialFilters = {
   search: "",
@@ -21,28 +22,47 @@ const initialFilters = {
 
 const DEFAULT_DISCOVER_QUERY = "a";
 
-const transformExternalRecipe = (recipe) => ({
-  _id: recipe.id,
-  title: recipe.title,
-  imageUrl: recipe.image,
-  cuisineType: recipe.cuisine || recipe.category || "Global",
+const transformExternalRecipe = (recipe) => {
+  const imageContext = {
+    title: recipe.title,
+    cuisine: recipe.cuisine,
+    category: recipe.category,
+    tags: recipe.tags,
+  };
+
+  const imageUrl = selectRecipeImage([recipe.imageUrl, recipe.image], imageContext);
+
+  return {
+    _id: recipe.id,
+    title: recipe.title,
+    imageUrl,
+    cuisineType: recipe.cuisine || recipe.category || "Global",
+    category: recipe.category,
   summary: recipe.instructions?.[0] || "Imported from TheMealDB to inspire your next meal.",
-  cookingTime: null,
-  avgRating: null,
-  createdBy: { name: "TheMealDB" },
-  isExternal: true,
-});
+    cookingTime: null,
+    avgRating: null,
+    createdBy: { name: "TheMealDB" },
+    isExternal: true,
+  };
+};
 
 const createHeroSlidesFromExternal = (recipes) =>
   recipes.slice(0, 4).map((recipe) => {
     const subtitleParts = [recipe.cuisineType, recipe.category].filter(Boolean);
     const subtitle = subtitleParts.length ? subtitleParts.join(" • ") : "Curated by TheMealDB";
+    const heroImage = selectRecipeImage([recipe.imageUrl, recipe.image], {
+      title: recipe.title,
+      subtitle,
+      cuisine: recipe.cuisineType,
+      category: recipe.category,
+      tags: recipe.tags,
+    });
     return {
       _id: recipe._id,
       title: recipe.title,
       subtitle,
       description: recipe.summary,
-      imageUrl: recipe.imageUrl,
+      imageUrl: heroImage,
       ctaHref: `/recipes/${recipe._id}`,
       ctaLabel: "View recipe",
       tag: recipe.cuisineType || "TheMealDB",
@@ -75,7 +95,12 @@ const buildCollectionsFromExternal = (recipes) =>
     title: recipe.title,
     subtitle: recipe.cuisineType ? `${recipe.cuisineType} cuisine` : undefined,
     description: recipe.summary,
-    imageUrl: recipe.imageUrl,
+    imageUrl: selectRecipeImage([recipe.imageUrl, recipe.image], {
+      title: recipe.title,
+      cuisine: recipe.cuisineType,
+      category: recipe.category,
+      tags: recipe.tags,
+    }),
     ctaHref: `/recipes/${recipe._id}`,
     ctaLabel: "Explore recipe",
   }));
@@ -85,7 +110,12 @@ const buildGuidesFromExternal = (recipes) =>
     _id: recipe._id,
     title: recipe.title,
     description: recipe.summary,
-    imageUrl: recipe.imageUrl,
+    imageUrl: selectRecipeImage([recipe.imageUrl, recipe.image], {
+      title: recipe.title,
+      cuisine: recipe.cuisineType,
+      category: recipe.category,
+      tags: recipe.tags,
+    }),
     ctaHref: `/recipes/${recipe._id}`,
     ctaLabel: "Cook this",
     meta: {

@@ -1,3 +1,5 @@
+import matchaTiramisu from "../assets/matcha-tiramisu.png";
+
 const STORAGE_KEY = "savora_mock_db_v2";
 
 const clone = (value) =>
@@ -132,7 +134,7 @@ const DEFAULT_RECIPES = [
     _id: "recipe_matcha_tiramisu",
     title: "Matcha Cloud Tiramisu",
     summary: "Airy matcha mascarpone layered with citrus-soaked ladyfingers and white chocolate dust.",
-    imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+    imageUrl: matchaTiramisu,
     cuisineType: "Fusion",
     dietType: "Veg",
     category: "Dessert",
@@ -269,7 +271,7 @@ const DEFAULT_HOME_CONTENT = {
       title: "Desserts that float above the table",
       subtitle: "Matcha tiramisu • No-bake delight",
       description: "Layered clouds of matcha mascarpone with citrus brightness for an effortless finish.",
-      imageUrl: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
+      imageUrl: matchaTiramisu,
       ctaHref: "/recipes/recipe_matcha_tiramisu",
       ctaLabel: "See the layers",
       tag: "Pastry studio",
@@ -319,7 +321,7 @@ const DEFAULT_HOME_CONTENT = {
       title: "Sweet balance",
       subtitle: "Tea-time finales",
       description: "Matcha, citrus, and chocolate assemble into airy desserts with elegant restraint.",
-      imageUrl: "https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?auto=format&fit=crop&w=900&q=80",
+      imageUrl: matchaTiramisu,
       ctaHref: "/recipes/recipe_matcha_tiramisu",
       ctaLabel: "Bake (no oven)",
     },
@@ -346,7 +348,7 @@ const DEFAULT_HOME_CONTENT = {
       _id: "guide_matcha",
       title: "Matcha desserts without bitterness",
       description: "Build flavour layers with floral teas, citrus, and just enough sweetness.",
-      imageUrl: "https://images.unsplash.com/photo-1529933037704-34c1b4c8e9c5?auto=format&fit=crop&w=900&q=80",
+      imageUrl: matchaTiramisu,
       ctaHref: "/recipes/recipe_matcha_tiramisu",
       ctaLabel: "Blend it",
       meta: { readTime: "4 min read" },
