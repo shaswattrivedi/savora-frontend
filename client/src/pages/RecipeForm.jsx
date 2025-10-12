@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { apiRequest } from "../utils/api.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
+import "../styles/recipeForm.css";
 
 const emptyRecipe = {
   title: "",
@@ -96,109 +97,141 @@ const RecipeFormPage = ({ mode = "create" }) => {
   };
 
   return (
-    <div className="page page--slim">
-      <section className="panel panel--glass">
-        <h1>{mode === "edit" ? "Edit recipe" : "Share a new recipe"}</h1>
-        <form className="recipe-form" onSubmit={handleSubmit}>
-          <label>
-            Title
-            <input name="title" value={form.title} onChange={handleChange} required />
-          </label>
-
-          <label>
-            Summary
-            <textarea
-              name="summary"
-              placeholder="A short teaser for this dish"
-              value={form.summary}
-              onChange={handleChange}
-              rows={3}
-            />
-          </label>
-
-          <label>
-            Ingredients
-            <textarea
-              name="ingredients"
-              value={form.ingredients}
-              onChange={handleChange}
-              rows={6}
-              placeholder="One ingredient per line"
-              required
-            />
-          </label>
-
-          <label>
-            Steps
-            <textarea
-              name="steps"
-              value={form.steps}
-              onChange={handleChange}
-              rows={6}
-              placeholder="Describe each step on a new line"
-              required
-            />
-          </label>
-
-          <section className="recipe-form__grid">
-            <label>
-              Cooking time (mins)
+    <div className="page page--center recipe-form-page">
+        <section className="recipe-form-card">
+          <h1 className="recipe-form-title">{mode === "edit" ? "Edit recipe" : "Share a new recipe"}</h1>
+          <p className="recipe-form-desc">Drop in your signature dish details and publish to the Savora table.</p>
+          <form className="recipe-form" onSubmit={handleSubmit}>
+            <label className="recipe-form-label" htmlFor="title">
+              Title
               <input
-                name="cookingTime"
-                type="number"
-                min={1}
-                value={form.cookingTime}
+                id="title"
+                name="title"
+                className="recipe-field"
+                value={form.title}
                 onChange={handleChange}
                 required
               />
             </label>
-            <label>
-              Cuisine
-              <select name="cuisineType" value={form.cuisineType} onChange={handleChange}>
-                <option>Indian</option>
-                <option>Italian</option>
-                <option>Asian</option>
-                <option>Continental</option>
-                <option>Desserts</option>
-                <option>Middle Eastern</option>
-                <option>International</option>
-              </select>
-            </label>
-            <label>
-              Diet
-              <select name="dietType" value={form.dietType} onChange={handleChange}>
-                <option>Veg</option>
-                <option>Non-Veg</option>
-                <option>Vegan</option>
-              </select>
-            </label>
-            <label>
-              Category tags
-              <input
-                name="categoryTags"
-                value={form.categoryTags}
+
+            <label className="recipe-form-label" htmlFor="summary">
+              Summary
+              <textarea
+                id="summary"
+                name="summary"
+                className="recipe-field recipe-field--textarea"
+                placeholder="A short teaser for this dish"
+                value={form.summary}
                 onChange={handleChange}
-                placeholder="Desserts, Weeknight, Family"
+                rows={3}
               />
             </label>
-          </section>
 
-          <label>
-            Image URL
-            <input
-              name="imageUrl"
-              type="url"
-              placeholder="https://"
-              value={form.imageUrl}
-              onChange={handleChange}
-            />
-          </label>
+            <label className="recipe-form-label" htmlFor="ingredients">
+              Ingredients
+              <textarea
+                id="ingredients"
+                name="ingredients"
+                className="recipe-field recipe-field--textarea"
+                value={form.ingredients}
+                onChange={handleChange}
+                rows={6}
+                placeholder="One ingredient per line"
+                required
+              />
+            </label>
 
-          <button type="submit" className="btn btn--primary" disabled={loading}>
-            {loading ? "Saving..." : mode === "edit" ? "Update recipe" : "Publish recipe"}
-          </button>
-        </form>
-      </section>
+            <label className="recipe-form-label" htmlFor="steps">
+              Steps
+              <textarea
+                id="steps"
+                name="steps"
+                className="recipe-field recipe-field--textarea"
+                value={form.steps}
+                onChange={handleChange}
+                rows={6}
+                placeholder="Describe each step on a new line"
+                required
+              />
+            </label>
+
+            <section className="recipe-form-grid">
+              <label className="recipe-form-label" htmlFor="cookingTime">
+                Cooking time (mins)
+                <input
+                  id="cookingTime"
+                  name="cookingTime"
+                  className="recipe-field"
+                  type="number"
+                  min={1}
+                  value={form.cookingTime}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label className="recipe-form-label" htmlFor="cuisineType">
+                Cuisine
+                <select
+                  id="cuisineType"
+                  name="cuisineType"
+                  className="recipe-field recipe-field--select"
+                  value={form.cuisineType}
+                  onChange={handleChange}
+                >
+                  <option>Indian</option>
+                  <option>Italian</option>
+                  <option>Asian</option>
+                  <option>Continental</option>
+                  <option>Desserts</option>
+                  <option>Middle Eastern</option>
+                  <option>International</option>
+                </select>
+              </label>
+              <label className="recipe-form-label" htmlFor="dietType">
+                Diet
+                <select
+                  id="dietType"
+                  name="dietType"
+                  className="recipe-field recipe-field--select"
+                  value={form.dietType}
+                  onChange={handleChange}
+                >
+                  <option>Veg</option>
+                  <option>Non-Veg</option>
+                  <option>Vegan</option>
+                </select>
+              </label>
+              <label className="recipe-form-label" htmlFor="categoryTags">
+                Category tags
+                <input
+                  id="categoryTags"
+                  name="categoryTags"
+                  className="recipe-field"
+                  value={form.categoryTags}
+                  onChange={handleChange}
+                  placeholder="Desserts, Weeknight, Family"
+                />
+              </label>
+            </section>
+
+            <label className="recipe-form-label" htmlFor="imageUrl">
+              Image URL
+              <input
+                id="imageUrl"
+                name="imageUrl"
+                className="recipe-field"
+                type="url"
+                placeholder="https://"
+                value={form.imageUrl}
+                onChange={handleChange}
+              />
+            </label>
+
+            <button type="submit" className="btn btn--primary recipe-form-submit" disabled={loading}>
+              {loading ? "Saving..." : mode === "edit" ? "Update recipe" : "Publish recipe"}
+            </button>
+          </form>
+        </section>
     </div>
   );
 };
