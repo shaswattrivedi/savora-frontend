@@ -421,7 +421,7 @@
   border: 1px solid transparent;
   box-shadow: 0 16px 32px rgba(28, 37, 65, 0.12);
   display: grid;
-  grid-template-rows: 160px 1fr;
+  grid-template-rows: 140px 1fr;
 }
 
 .home-guides__card img {
@@ -431,14 +431,22 @@
 }
 
 .home-guides__content {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.6rem;
-  padding: 1.4rem;
+  padding: 1.1rem 1.2rem 1.2rem;
 }
 
 .home-guides__content h4 {
   margin: 0;
   font-size: 1.2rem;
+}
+
+.home-guides__content p {
+  margin: 0;
+  flex-grow: 1;
+  line-height: 1.5;
+  color: var(--color-text);
 }
 
 .home-guides__meta {
@@ -448,7 +456,8 @@
 }
 
 .home-guides__cta {
-  justify-self: flex-start;
+  align-self: flex-start;
+  margin-top: auto;
   color: #1c2541;
   font-weight: 700;
   padding: 0.4rem 1rem;
@@ -482,16 +491,46 @@
 }
 
 .home-contributors__card {
-  background:
-    linear-gradient(155deg, rgba(255, 255, 255, 0.96), rgba(255, 244, 242, 0.84)) padding-box,
-    linear-gradient(135deg, rgba(62, 180, 137, 0.22), rgba(255, 107, 107, 0.22)) border-box;
-  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
   border-radius: var(--radius-md);
   padding: 1.5rem;
   text-align: center;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.96), rgba(255, 244, 242, 0.9)) padding-box,
+    linear-gradient(135deg, rgba(62, 180, 137, 0.28), rgba(255, 107, 107, 0.26)) border-box;
+  border: 1px solid transparent;
+  background-clip: padding-box, border-box;
   box-shadow: 0 16px 32px rgba(28, 37, 65, 0.12);
   display: grid;
   gap: 0.7rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.home-contributors__card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(62, 180, 137, 0.18), transparent 58%),
+    radial-gradient(circle at 82% 26%, rgba(255, 107, 107, 0.18), transparent 55%),
+    linear-gradient(140deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.25));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.home-contributors__card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-contributors__card:hover,
+.home-contributors__card:focus-within {
+  transform: translateY(-6px);
+  box-shadow:
+    0 22px 44px rgba(28, 37, 65, 0.18),
+    0 12px 28px rgba(28, 37, 65, 0.14);
+  border-color: rgba(62, 180, 137, 0.35);
 }
 
 .home-contributors__card img {

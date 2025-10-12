@@ -5,7 +5,6 @@ import RecipeGrid from "../components/RecipeGrid.jsx";
 import RecipeCard from "../components/RecipeCard.jsx";
 import HomeHero from "../components/home/HomeHero.jsx";
 import HomeCollections from "../components/home/HomeCollections.jsx";
-import HomeGuides from "../components/home/HomeGuides.jsx";
 import { apiRequest } from "../utils/api.js";
 import { useToast } from "../hooks/useToast.js";
 import { searchExternalRecipes } from "../api/externalRecipes.js";
@@ -95,24 +94,6 @@ const buildCollectionsFromExternal = (recipes) =>
     ctaLabel: "Explore recipe",
   }));
 
-const buildGuidesFromExternal = (recipes) =>
-  recipes.slice(3, 6).map((recipe) => ({
-    _id: recipe._id,
-    title: recipe.title,
-    description: recipe.summary,
-    imageUrl: selectRecipeImage([recipe.imageUrl, recipe.image], {
-      title: recipe.title,
-      cuisine: recipe.cuisineType,
-      category: recipe.category,
-      tags: recipe.tags,
-    }),
-    ctaHref: `/recipes/${recipe._id}`,
-    ctaLabel: "Cook this",
-    meta: {
-      readTime: recipe.cuisineType ? `${recipe.cuisineType} flair` : "Chef-tested",
-    },
-  }));
-
 const HomePage = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
@@ -125,7 +106,6 @@ const HomePage = () => {
     cachedState?.homeContent ?? {
       hero: [],
       collections: [],
-      guides: [],
     }
   );
   const [contributors, setContributors] = useState(cachedState?.contributors ?? []);
@@ -248,7 +228,6 @@ const HomePage = () => {
         setHomeContent({
           hero: response.hero || [],
           collections: response.collections || [],
-          guides: response.guides || [],
         });
       } catch (error) {
         // We keep the page functional even if the curated content fails.
@@ -379,12 +358,8 @@ const HomePage = () => {
       ? buildCollectionsFromExternal(recipes)
       : homeContent.collections;
 
-  const guidesData =
-    usingExternal && recipes.length
-      ? buildGuidesFromExternal(recipes)
-      : homeContent.guides;
-
   const trendingRecipes = (usingExternal ? recipes : featured).slice(0, 4);
+  const communityRecipes = recipes.slice(0, 16);
 
   useEffect(() => {
     homePageCache = {
@@ -441,7 +416,7 @@ const HomePage = () => {
               </div>
             )}
             <RecipeGrid
-              recipes={recipes}
+              recipes={communityRecipes}
               emptyMessage={
                 usingExternal
                   ? "No recipes found on Savora or from our guest chefs yet. Try a different search."
@@ -476,18 +451,13 @@ const HomePage = () => {
         )}
       </section>
 
-  <HomeGuides guides={guidesData} />
-
       <section className="section home-contributors">
         <div className="home-section__header">
           <h2 className="home-section__title">Community spotlights</h2>
-          <p className="home-section__subtitle">
-            Meet the Savora members sharing their favourite recipes every week.
-          </p>
         </div>
         <div className="home-contributors__list">
           {contributors.length ? (
-            contributors.map((contributor) => (
+            contributors.slice(0, 3).map((contributor) => (
               <article key={contributor._id} className="home-contributors__card">
                 <img src={contributor.avatarUrl} alt={contributor.name} />
                 <h3>{contributor.name}</h3>

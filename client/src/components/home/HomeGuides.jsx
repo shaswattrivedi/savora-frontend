@@ -11,9 +11,6 @@ const HomeGuides = ({ guides = [] }) => {
     <section className="section home-guides">
       <div className="home-section__header">
         <h2 className="home-section__title">In the Savora kitchen</h2>
-        <p className="home-section__subtitle">
-          Tutorials and how-to guides to sharpen your skills and simplify meal planning.
-        </p>
       </div>
       <div className="home-guides__grid">
         {guides.map((guide) => (
