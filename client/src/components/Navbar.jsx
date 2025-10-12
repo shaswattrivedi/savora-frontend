@@ -4,6 +4,8 @@ import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
 import accountIcon from "../assets/account.png";
 import logoutIcon from "../assets/logout.png";
+import enterIcon from "../assets/enter.png";
+import addUserIcon from "../assets/add-user.png";
 
 const navLinks = [
   { to: "/", label: "Discover" },
@@ -91,11 +93,25 @@ const Navbar = () => {
 
     return (
       <>
-        <NavLink to="/login" className="navbar__link" onClick={() => setIsMenuOpen(false)}>
-          Login
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            `navbar__link navbar__login-link ${isActive ? "navbar__link--active" : ""}`
+          }
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <img src={enterIcon} alt="" aria-hidden="true" className="navbar__login-icon" />
+          <span className="sr-only">Login</span>
         </NavLink>
-        <NavLink to="/register" className="navbar__cta" onClick={() => setIsMenuOpen(false)}>
-          Join Savora
+        <NavLink
+          to="/register"
+          className={({ isActive }) =>
+            `navbar__link navbar__signup-link ${isActive ? "navbar__link--active" : ""}`
+          }
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <img src={addUserIcon} alt="" aria-hidden="true" className="navbar__signup-icon" />
+          <span className="sr-only">Join Savora</span>
         </NavLink>
       </>
     );

@@ -367,6 +367,44 @@ button, input, select, textarea {
   box-shadow: 0 8px 18px rgba(28, 37, 65, 0.16);
 }
 
+.navbar__login-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0;
+}
+
+.navbar__login-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  object-fit: cover;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.navbar__signup-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0;
+}
+
+.navbar__signup-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 14px;
+  object-fit: cover;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.navbar__login-link:hover .navbar__login-icon,
+.navbar__login-link:focus-visible .navbar__login-icon,
+.navbar__signup-link:hover .navbar__signup-icon,
+.navbar__signup-link:focus-visible .navbar__signup-icon {
+  transform: translateY(-2px) scale(1.05);
+  filter: brightness(1.08);
+}
+
 .navbar__link:hover {
   color: var(--color-primary);
   text-decoration: none;
@@ -578,11 +616,6 @@ button, input, select, textarea {
 }
 
 .external-results-banner strong {
-.external-results-banner__chefs {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-muted);
-}
   font-family: var(--font-heading);
   font-size: 1rem;
   letter-spacing: 0.02em;
