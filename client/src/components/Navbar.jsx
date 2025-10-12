@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
 import accountIcon from "../assets/account.png";
+import addUserIcon from "../assets/add-user.png";
 import enterIcon from "../assets/enter.png";
 import logoutIcon from "../assets/logout.png";
 
@@ -95,7 +96,7 @@ const Navbar = () => {
         <NavLink
           to="/login"
           className={({ isActive }) =>
-            `navbar__link navbar__icon-link ${isActive ? "navbar__link--active" : ""}`
+            `navbar__link navbar__login-link ${isActive ? "navbar__link--active" : ""}`
           }
           onClick={() => setIsMenuOpen(false)}
         >
@@ -104,10 +105,13 @@ const Navbar = () => {
         </NavLink>
         <NavLink
           to="/register"
-          className="navbar__cta navbar__cta--ghost"
+          className={({ isActive }) =>
+            `navbar__link navbar__signup-link ${isActive ? "navbar__link--active" : ""}`
+          }
           onClick={() => setIsMenuOpen(false)}
         >
-          Join Savora
+          <img src={addUserIcon} alt="" aria-hidden="true" className="navbar__signup-icon" />
+          <span className="sr-only">Join Savora</span>
         </NavLink>
       </>
     );
