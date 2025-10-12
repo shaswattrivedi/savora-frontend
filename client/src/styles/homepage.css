@@ -331,13 +331,15 @@
   z-index: 1;
   padding: 1.6rem;
   display: grid;
-  gap: 0.6rem;
+  justify-items: center;
+  gap: 0.65rem;
   height: 100%;
   align-content: flex-end;
+  text-align: center;
 }
 
 .home-collections__eyebrow {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 700;
@@ -356,8 +358,8 @@
 }
 
 .home-collections__cta {
-  justify-self: flex-start;
-  margin-top: 0.5rem;
+  justify-self: center;
+  margin-top: 0.4rem;
   padding: 0.45rem 1rem;
   border-radius: 999px;
   background: var(--button-mint);

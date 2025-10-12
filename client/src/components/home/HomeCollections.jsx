@@ -39,7 +39,6 @@ const HomeCollections = ({ collections = [] }) => {
                 <span className="home-collections__eyebrow">{collection.subtitle}</span>
               )}
               <h3>{collection.title}</h3>
-              {collection.description && <p>{collection.description}</p>}
               {collection.ctaHref && (
                 <Link to={collection.ctaHref} className="home-collections__cta">
                   {collection.ctaLabel || "Explore"}
