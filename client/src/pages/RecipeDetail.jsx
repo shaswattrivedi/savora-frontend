@@ -218,16 +218,18 @@ const RecipeDetailPage = () => {
       </header>
 
       <section className="recipe-detail__grid">
-        <article id="ingredients" className="panel recipe-detail__card">
+        <article id="ingredients" className="panel recipe-detail__card recipe-detail__card--ingredients">
           <div className="recipe-detail__card-header">
             <h2>Ingredients</h2>
           </div>
           <div className="recipe-detail__card-body">
-            <ul>
-              {ingredientList.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            <div className="recipe-detail__panel-content recipe-ingredients__content">
+              <ul>
+                {ingredientList.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </article>
         <article className="panel recipe-detail__card recipe-detail__card--steps">
@@ -246,10 +248,9 @@ const RecipeDetailPage = () => {
                 >
                   <span aria-hidden="true">‹</span>
                 </button>
-                <div className="recipe-steps__content" aria-live="polite" aria-atomic="true">
+                <div className="recipe-detail__panel-content recipe-steps__content" aria-live="polite" aria-atomic="true">
                   <div className="recipe-steps__header">
                     <span className="recipe-steps__badge">Step {activeStepIndex + 1}</span>
-                    <span className="recipe-steps__counter">{stepProgressLabel}</span>
                   </div>
                   <p className="recipe-steps__instruction">{currentStep}</p>
                 </div>
