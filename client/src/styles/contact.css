@@ -13,7 +13,7 @@
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-lg);
-  padding: 2.8rem 3rem;
+  padding: 2.6rem 3rem;
   max-width: 560px;
   width: min(92vw, 560px);
   background:
@@ -24,7 +24,7 @@
   box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
+  gap: 1.6rem;
 }
 
 .contact-glass::before {
@@ -51,16 +51,18 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
   text-align: center;
 }
 
 .contact-desc {
   color: var(--color-muted);
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   text-align: center;
   margin: 0 auto;
-  max-width: 32ch;
+  align-self: center;
+  width: 100%;
+  margin-bottom: 0.4rem;
 }
 
 .contact-form {
@@ -84,6 +86,7 @@
   box-shadow: 0 2px 12px rgba(62,180,137,0.07);
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
+  resize: none;
 }
 .input-glass:focus {
   border-color: var(--savora-mint);
@@ -95,4 +98,6 @@
   font-size: 1.08rem;
   letter-spacing: 0.02em;
   box-shadow: 0 8px 24px rgba(62,180,137,0.10);
+  align-self: center;
+  padding: 0.85rem 1.8rem;
 }

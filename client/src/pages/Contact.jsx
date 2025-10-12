@@ -21,7 +21,7 @@ const ContactPage = () => {
   <div className="page page--center contact-page">
       <section className="contact-glass">
         <h1 className="contact-title">Contact Us</h1>
-        <p className="contact-desc">Have feedback, collaboration ideas, or questions? Send us a note below and we'll get back to you soon.</p>
+        <p className="contact-desc">Share a quick note or idea and we’ll reply shortly.</p>
         <form className="contact-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name</label>
