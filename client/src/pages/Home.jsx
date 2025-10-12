@@ -4,7 +4,6 @@ import RecipeFilters from "../components/RecipeFilters.jsx";
 import RecipeGrid from "../components/RecipeGrid.jsx";
 import RecipeCard from "../components/RecipeCard.jsx";
 import HomeHero from "../components/home/HomeHero.jsx";
-import HomeQuickPicks from "../components/home/HomeQuickPicks.jsx";
 import HomeCollections from "../components/home/HomeCollections.jsx";
 import HomeGuides from "../components/home/HomeGuides.jsx";
 import { apiRequest } from "../utils/api.js";
@@ -74,21 +73,6 @@ const createHeroSlidesFromExternal = (recipes) =>
     };
   });
 
-const buildQuickPicksFromExternal = (recipes) => {
-  const categories = Array.from(
-    new Set(recipes.map((recipe) => recipe.category).filter(Boolean))
-  );
-
-  if (!categories.length) {
-    return [];
-  }
-
-  return categories.slice(0, 6).map((category) => ({
-    title: category,
-    category,
-  }));
-};
-
 const buildCollectionsFromExternal = (recipes) =>
   recipes.slice(0, 3).map((recipe) => ({
     _id: recipe._id,
@@ -133,7 +117,6 @@ const HomePage = () => {
   const [homeContent, setHomeContent] = useState({
     hero: [],
     collections: [],
-    quickPicks: [],
     guides: [],
   });
   const [contributors, setContributors] = useState([]);
@@ -242,7 +225,6 @@ const HomePage = () => {
         setHomeContent({
           hero: response.hero || [],
           collections: response.collections || [],
-          quickPicks: response.quickPicks || [],
           guides: response.guides || [],
         });
       } catch (error) {
@@ -301,35 +283,6 @@ const HomePage = () => {
   const handleSearchInputChange = (event) => {
     const { value } = event.target;
     setFilters((prev) => ({ ...prev, search: value }));
-  };
-
-  const handleQuickPick = (category) => {
-    const normalizedCategory = category === filters.category ? "" : category;
-    setFilters((prev) => ({ ...prev, category: normalizedCategory }));
-
-    const previousSignature = searchParams.toString();
-    const params = new URLSearchParams(searchParams);
-
-    if (normalizedCategory) {
-      params.set("category", normalizedCategory);
-    } else {
-      params.delete("category");
-    }
-
-    params.delete("page");
-    const nextSignature = params.toString();
-    navigate({ pathname: "/", search: nextSignature ? `?${nextSignature}` : "" }, { replace: true });
-
-    if (nextSignature === previousSignature) {
-      loadRecipes({
-        page: 1,
-        category: normalizedCategory,
-        search: filters.search.trim(),
-        cuisine: filters.cuisine,
-        diet: filters.diet,
-        sort: filters.sort,
-      });
-    }
   };
 
   const handleFilterSubmit = (event) => {
@@ -398,11 +351,6 @@ const HomePage = () => {
         ? homeContent.hero
         : featured;
 
-  const quickPickItems =
-    usingExternal && recipes.length
-      ? buildQuickPicksFromExternal(recipes)
-      : homeContent.quickPicks;
-
   const collectionsData =
     usingExternal && recipes.length
       ? buildCollectionsFromExternal(recipes)
@@ -422,12 +370,6 @@ const HomePage = () => {
         searchValue={filters.search}
         onSearchChange={handleSearchInputChange}
         onSearchSubmit={handleFilterSubmit}
-      />
-
-      <HomeQuickPicks
-        items={quickPickItems}
-        activeCategory={filters.category}
-        onPick={handleQuickPick}
       />
 
       <HomeCollections collections={collectionsData} />
