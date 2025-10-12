@@ -1,24 +1,43 @@
 import matchaTiramisu from "../assets/matcha-tiramisu.png";
 
 const CUISINE_FALLBACKS = {
-  japanese: "https://cdn.pixabay.com/photo/2017/09/02/13/11/ramen-2701613_1280.jpg",
-  italian: "https://cdn.pixabay.com/photo/2015/04/08/13/13/food-712665_1280.jpg",
-  indian: "https://cdn.pixabay.com/photo/2017/07/07/13/44/indian-food-2485282_1280.jpg",
-  mediterranean: "https://cdn.pixabay.com/photo/2018/01/15/07/51/seafood-3081552_1280.jpg",
-  mexican: "https://cdn.pixabay.com/photo/2017/03/17/11/17/tacos-2156699_1280.jpg",
-  asian: "https://cdn.pixabay.com/photo/2016/03/05/19/02/sushi-1233511_1280.jpg",
+  japanese: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=1200&q=80",
+  italian: "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=1200&q=80",
+  indian: "https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=1200&q=80",
+  mediterranean: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
+  mexican: "https://images.unsplash.com/photo-1608031059821-ffa6fda3e2b9?auto=format&fit=crop&w=1200&q=80",
+  asian: "https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1200&q=80",
+  spanish: "https://www.themealdb.com/images/media/meals/xxrxux1503070723.jpg",
+  french: "https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=1200&q=80",
+  american: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=80",
+  thai: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1200&q=80",
+  korean: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80",
+  vietnamese: "https://images.unsplash.com/photo-1464219789935-c2d9d9d3bd59?auto=format&fit=crop&w=1200&q=80",
+  greek: "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=1200&q=80",
+  caribbean: "https://images.unsplash.com/photo-1600334129128-70e6043699e8?auto=format&fit=crop&w=1200&q=80",
 };
 
 const CATEGORY_FALLBACKS = {
-  pasta: "https://cdn.pixabay.com/photo/2015/05/13/16/08/pasta-765705_1280.jpg",
-  noodles: "https://cdn.pixabay.com/photo/2016/11/18/15/27/ramen-1836540_1280.jpg",
-  dessert: "https://cdn.pixabay.com/photo/2017/08/07/15/53/ice-cream-2607705_1280.jpg",
+  pasta: "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=1200&q=80",
+  noodles: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=1200&q=80",
+  dessert: "https://images.unsplash.com/photo-1542826438-1c56ea3a1f48?auto=format&fit=crop&w=1200&q=80",
   matcha: matchaTiramisu,
-  soup: "https://cdn.pixabay.com/photo/2017/11/23/08/16/soup-2973298_1280.jpg",
-  sandwich: "https://cdn.pixabay.com/photo/2015/05/31/12/14/sandwiches-791205_1280.jpg",
-  roast: "https://cdn.pixabay.com/photo/2014/12/16/22/25/chicken-571271_1280.jpg",
-  breakfast: "https://cdn.pixabay.com/photo/2017/08/07/07/50/pancakes-2604178_1280.jpg",
-  beverage: "https://cdn.pixabay.com/photo/2015/06/19/21/24/smoothies-815607_1280.jpg",
+  soup: "https://images.unsplash.com/photo-1512058564366-c9e3ec356ef2?auto=format&fit=crop&w=1200&q=80",
+  sandwich: "https://images.unsplash.com/photo-1543779503-7d4ba5c8c4ae?auto=format&fit=crop&w=1200&q=80",
+  roast: "https://images.unsplash.com/photo-1514516430032-7d100ffb0074?auto=format&fit=crop&w=1200&q=80",
+  breakfast: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1200&q=80",
+  beverage: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80",
+  seafood: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
+  beef: "https://images.unsplash.com/photo-1440103718860-0ec09be626d1?auto=format&fit=crop&w=1200&q=80",
+  chicken: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1200&q=80",
+  lamb: "https://images.unsplash.com/photo-1589308078054-83209a666d34?auto=format&fit=crop&w=1200&q=80",
+  pork: "https://images.unsplash.com/photo-1515669097368-22e68427d265?auto=format&fit=crop&w=1200&q=80",
+  vegetarian: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=80",
+  vegan: "https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?auto=format&fit=crop&w=1200&q=80",
+  bread: "https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=1200&q=80",
+  starter: "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=1200&q=80",
+  side: "https://images.unsplash.com/photo-1478145046317-39f10e56b5e9?auto=format&fit=crop&w=1200&q=80",
+  miscellaneous: "https://www.themealdb.com/images/media/meals/xxrxux1503070723.jpg",
 };
 
 const DEFAULT_FALLBACK_IMAGE = "https://cdn.pixabay.com/photo/2016/03/05/19/16/food-1239423_1280.jpg";
@@ -56,6 +75,11 @@ const CONTEXT_RULES = [
     keywords: ["matcha", "green tea"],
   },
   {
+    key: "spanish",
+    force: true,
+    keywords: ["spanish", "paella", "tapas", "migas"],
+  },
+  {
     key: "dessert",
     force: true,
     keywords: [
@@ -87,6 +111,11 @@ const CONTEXT_RULES = [
     keywords: ["smoothie", "latte", "shake", "drink", "mocktail", "cocktail", "juice", "tea", "coffee"],
   },
   {
+    key: "bread",
+    force: true,
+    keywords: ["bread", "crumb", "loaf", "focaccia", "baguette", "brioche"],
+  },
+  {
     key: "noodles",
     force: false,
     keywords: ["ramen", "noodle", "udon", "soba", "pho", "pad thai"],
@@ -101,6 +130,41 @@ const CONTEXT_RULES = [
     force: false,
     keywords: ["salmon", "fish", "seafood", "shrimp", "prawn", "tuna"],
   },
+  {
+    key: "seafood",
+    force: true,
+    keywords: ["salmon", "shrimp", "prawn", "lobster", "crab", "mussel", "clam", "octopus", "fish"],
+  },
+  {
+    key: "chicken",
+    force: false,
+    keywords: ["chicken", "poultry", "wings", "thigh"],
+  },
+  {
+    key: "beef",
+    force: false,
+    keywords: ["beef", "steak", "sirloin", "short rib"],
+  },
+  {
+    key: "pork",
+    force: false,
+    keywords: ["pork", "bacon", "ham", "prosciutto", "chorizo"],
+  },
+  {
+    key: "lamb",
+    force: false,
+    keywords: ["lamb", "mutton"],
+  },
+  {
+    key: "vegan",
+    force: false,
+    keywords: ["vegan", "plant-based", "tofu", "tempeh"],
+  },
+  {
+    key: "vegetarian",
+    force: false,
+    keywords: ["vegetarian", "veg-forward", "veggie", "meatless"],
+  },
 ];
 
 const FALLBACK_KEY_RESOLVERS = {
@@ -108,9 +172,18 @@ const FALLBACK_KEY_RESOLVERS = {
   matcha: () => CATEGORY_FALLBACKS.matcha,
   breakfast: () => CATEGORY_FALLBACKS.breakfast,
   beverage: () => CATEGORY_FALLBACKS.beverage,
+  spanish: () => CUISINE_FALLBACKS.spanish,
+  bread: () => CATEGORY_FALLBACKS.bread,
   noodles: () => CATEGORY_FALLBACKS.noodles,
   sandwich: () => CATEGORY_FALLBACKS.sandwich,
   mediterranean: () => CUISINE_FALLBACKS.mediterranean,
+  seafood: () => CATEGORY_FALLBACKS.seafood,
+  chicken: () => CATEGORY_FALLBACKS.chicken,
+  beef: () => CATEGORY_FALLBACKS.beef,
+  pork: () => CATEGORY_FALLBACKS.pork,
+  lamb: () => CATEGORY_FALLBACKS.lamb,
+  vegan: () => CATEGORY_FALLBACKS.vegan,
+  vegetarian: () => CATEGORY_FALLBACKS.vegetarian,
 };
 
 const resolveFallbackByKey = (key) => {
