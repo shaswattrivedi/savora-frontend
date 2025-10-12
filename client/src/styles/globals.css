@@ -376,6 +376,22 @@ button, input, select, textarea {
   color: var(--color-primary);
   font-weight: 600;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.navbar__logout-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 18px rgba(28, 37, 65, 0.16);
+}
+
+.navbar__logout:hover .navbar__logout-icon {
+  transform: translateY(-1px);
 }
 
 .navbar__auth {

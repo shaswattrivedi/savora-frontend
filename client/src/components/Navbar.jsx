@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
 import accountIcon from "../assets/account.png";
+import logoutIcon from "../assets/logout.png";
 
 const navLinks = [
   { to: "/", label: "Discover" },
@@ -81,7 +82,8 @@ const Navbar = () => {
             </NavLink>
           )}
           <button type="button" className="navbar__logout" onClick={handleLogout}>
-            Logout
+            <img src={logoutIcon} alt="" aria-hidden="true" className="navbar__logout-icon" />
+            <span className="sr-only">Logout</span>
           </button>
         </>
       );
