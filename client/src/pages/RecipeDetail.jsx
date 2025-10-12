@@ -40,6 +40,11 @@ const RecipeDetailPage = () => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(true);
+  const [activeStepIndex, setActiveStepIndex] = useState(0);
+
+  const ingredientList = Array.isArray(recipe?.ingredients) ? recipe.ingredients : [];
+  const stepList = Array.isArray(recipe?.steps) ? recipe.steps : [];
+  const totalSteps = stepList.length;
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -64,6 +69,36 @@ const RecipeDetailPage = () => {
 
     fetchRecipe();
   }, [id, addToast]);
+
+  useEffect(() => {
+    setActiveStepIndex(0);
+  }, [id]);
+
+  useEffect(() => {
+    if (totalSteps === 0 && activeStepIndex !== 0) {
+      setActiveStepIndex(0);
+      return;
+    }
+
+    if (totalSteps > 0 && activeStepIndex >= totalSteps) {
+      setActiveStepIndex(totalSteps - 1);
+    }
+  }, [activeStepIndex, totalSteps]);
+
+  const currentStep = totalSteps ? stepList[activeStepIndex] : null;
+  const stepProgressLabel = totalSteps ? `Step ${activeStepIndex + 1} of ${totalSteps}` : "Steps coming soon";
+  const isPrevDisabled = totalSteps <= 1 || activeStepIndex === 0;
+  const isNextDisabled = totalSteps <= 1 || activeStepIndex === totalSteps - 1;
+
+  const showPreviousStep = () => {
+    if (isPrevDisabled) return;
+    setActiveStepIndex((current) => Math.max(current - 1, 0));
+  };
+
+  const showNextStep = () => {
+    if (isNextDisabled) return;
+    setActiveStepIndex((current) => Math.min(current + 1, totalSteps - 1));
+  };
 
   const handleReviewSubmit = async (event) => {
     event.preventDefault();
@@ -141,8 +176,6 @@ const RecipeDetailPage = () => {
     (recipe.isExternal
       ? `This dish arrives courtesy of Chef ${externalChefName}.`
       : "Savora chefs are still adding a summary for this recipe.");
-  const ingredientList = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
-  const stepList = Array.isArray(recipe.steps) ? recipe.steps : [];
   const recipeImage =
     recipe.imageUrl ||
     getRecipeFallbackImage({ cuisine: recipe.cuisineType || recipe.cuisine, category: recipe.category, title: recipe.title });
@@ -197,16 +230,42 @@ const RecipeDetailPage = () => {
             </ul>
           </div>
         </article>
-        <article className="panel recipe-detail__card recipe-detail__card--scroll">
+        <article className="panel recipe-detail__card recipe-detail__card--steps">
           <div className="recipe-detail__card-header">
             <h2>Steps</h2>
           </div>
           <div className="recipe-detail__card-body">
-            <ol>
-              {stepList.map((step, index) => (
-                <li key={`${index}-${step}`}>{step}</li>
-              ))}
-            </ol>
+            {totalSteps ? (
+              <div className="recipe-steps" role="group" aria-label="Recipe steps navigator">
+                <button
+                  type="button"
+                  className="recipe-steps__arrow recipe-steps__arrow--prev"
+                  onClick={showPreviousStep}
+                  aria-label="Previous step"
+                  disabled={isPrevDisabled}
+                >
+                  <span aria-hidden="true">‹</span>
+                </button>
+                <div className="recipe-steps__content" aria-live="polite" aria-atomic="true">
+                  <div className="recipe-steps__header">
+                    <span className="recipe-steps__badge">Step {activeStepIndex + 1}</span>
+                    <span className="recipe-steps__counter">{stepProgressLabel}</span>
+                  </div>
+                  <p className="recipe-steps__instruction">{currentStep}</p>
+                </div>
+                <button
+                  type="button"
+                  className="recipe-steps__arrow recipe-steps__arrow--next"
+                  onClick={showNextStep}
+                  aria-label="Next step"
+                  disabled={isNextDisabled}
+                >
+                  <span aria-hidden="true">›</span>
+                </button>
+              </div>
+            ) : (
+              <p className="recipe-steps__empty">Our culinary editors are polishing these directions. Check back soon.</p>
+            )}
           </div>
         </article>
         <article className="panel recipe-detail__card">
