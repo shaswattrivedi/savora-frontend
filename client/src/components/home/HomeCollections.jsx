@@ -11,9 +11,6 @@ const HomeCollections = ({ collections = [] }) => {
     <section className="section home-collections">
       <div className="home-section__header">
         <h2 className="home-section__title">Featured collections</h2>
-        <p className="home-section__subtitle">
-          Seasonal comfort food, weekend baking projects, and one-pan dinners picked by our editors.
-        </p>
       </div>
       <div className="home-collections__grid">
         {collections.map((collection) => (
