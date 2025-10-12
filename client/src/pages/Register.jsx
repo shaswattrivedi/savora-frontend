@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
-import "../styles/register.css";
+import "../styles/auth.css";
 
 const RegisterPage = () => {
   const { register } = useAuth();
