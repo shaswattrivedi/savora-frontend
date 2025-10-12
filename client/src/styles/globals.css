@@ -310,6 +310,25 @@ button, input, select, textarea {
   text-decoration: none;
 }
 
+.navbar__profile-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0;
+}
+
+.navbar__profile-link.navbar__link--active::after {
+  display: none;
+}
+
+.navbar__profile-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 18px rgba(28, 37, 65, 0.16);
+}
+
 .navbar__link:hover {
   color: var(--color-primary);
   text-decoration: none;

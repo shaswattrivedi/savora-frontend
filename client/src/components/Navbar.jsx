@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
+import accountIcon from "../assets/account.png";
 
 const navLinks = [
   { to: "/", label: "Discover" },
@@ -64,8 +65,15 @@ const Navbar = () => {
           <NavLink to="/add" className="navbar__cta" onClick={() => setIsMenuOpen(false)}>
             Share a Recipe
           </NavLink>
-          <NavLink to="/profile" className="navbar__link" onClick={() => setIsMenuOpen(false)}>
-            My Space
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `navbar__link navbar__profile-link ${isActive ? "navbar__link--active" : ""}`
+            }
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <img src={accountIcon} alt="" aria-hidden="true" className="navbar__profile-icon" />
+            <span className="sr-only">My Space</span>
           </NavLink>
           {user.role === "admin" && (
             <NavLink to="/admin" className="navbar__link" onClick={() => setIsMenuOpen(false)}>
