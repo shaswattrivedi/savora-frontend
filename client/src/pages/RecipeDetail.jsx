@@ -131,6 +131,11 @@ const RecipeDetailPage = () => {
     recipe.categoryTags?.length
       ? recipe.categoryTags.join(", ")
       : recipe.category || recipe.cuisineType || "Global favourite";
+  const heroSubtitle = [recipe.cuisineType || recipe.cuisine, categoryLabel, `Chef ${externalChefName}`]
+    .filter(Boolean)
+    .map((part) => part.replace(/\s*,\s*/g, " • "))
+    .join(" • ");
+  const heroTag = recipe.cuisineType || recipe.category || "Featured";
   const summaryText =
     recipe.summary ||
     (recipe.isExternal
@@ -144,22 +149,27 @@ const RecipeDetailPage = () => {
 
   return (
     <div className="page recipe-detail">
-      <header className="recipe-detail__hero gradient-dawn">
-        <div className="recipe-detail__info">
-          <h1>{recipe.title}</h1>
-          <div className="recipe-detail__meta">
+      <header className="home-hero recipe-detail__hero">
+        <div className="home-hero__content">
+          <span className="home-hero__tag">{heroTag}</span>
+          <h1 className="home-hero__title">{recipe.title}</h1>
+          {heroSubtitle && <p className="home-hero__subtitle">{heroSubtitle}</p>}
+          <div className="home-hero__stats">
             <span>⏱ {timeLabel}</span>
             <span>★ {ratingLabel}</span>
             <span>{categoryLabel}</span>
           </div>
-          <p>{summaryText}</p>
-          <div className="recipe-detail__actions">
-            <button type="button" className="btn btn--primary" onClick={handleShare}>
+          <p className="home-hero__description">{summaryText}</p>
+          <div className="home-hero__actions">
+            <a href="#ingredients" className="btn btn--primary">
+              Start cooking
+            </a>
+            <button type="button" className="btn btn--secondary" onClick={handleShare}>
               Share recipe
             </button>
           </div>
         </div>
-        <div className="recipe-detail__image">
+        <div className="home-hero__media">
           <img
             src={recipeImage}
             alt={recipe.title}
@@ -175,27 +185,39 @@ const RecipeDetailPage = () => {
       </header>
 
       <section className="recipe-detail__grid">
-        <article className="panel">
-          <h2>Ingredients</h2>
-          <ul>
-            {ingredientList.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+        <article id="ingredients" className="panel recipe-detail__card">
+          <div className="recipe-detail__card-header">
+            <h2>Ingredients</h2>
+          </div>
+          <div className="recipe-detail__card-body">
+            <ul>
+              {ingredientList.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
         </article>
-        <article className="panel">
-          <h2>Steps</h2>
-          <ol>
-            {stepList.map((step, index) => (
-              <li key={`${index}-${step}`}>{step}</li>
-            ))}
-          </ol>
+        <article className="panel recipe-detail__card recipe-detail__card--scroll">
+          <div className="recipe-detail__card-header">
+            <h2>Steps</h2>
+          </div>
+          <div className="recipe-detail__card-body">
+            <ol>
+              {stepList.map((step, index) => (
+                <li key={`${index}-${step}`}>{step}</li>
+              ))}
+            </ol>
+          </div>
         </article>
-        <article className="panel">
-          <h2>Nutrition</h2>
-          <p>
-            Savora creators can add nutrition details soon. For now, prioritize fresh ingredients and mindful portions.
-          </p>
+        <article className="panel recipe-detail__card">
+          <div className="recipe-detail__card-header">
+            <h2>Nutrition</h2>
+          </div>
+          <div className="recipe-detail__card-body">
+            <p>
+              Savora creators can add nutrition details soon. For now, prioritize fresh ingredients and mindful portions.
+            </p>
+          </div>
         </article>
       </section>
 
