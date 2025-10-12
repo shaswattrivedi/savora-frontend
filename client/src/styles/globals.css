@@ -352,6 +352,21 @@ button, input, select, textarea {
   text-decoration: none;
 }
 
+.navbar__link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.45rem;
+  width: 120%;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--savora-coral);
+  transform: translateX(-50%) scaleX(0.3);
+  opacity: 0;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+  pointer-events: none;
+}
+
 .navbar__profile-link {
   display: inline-flex;
   align-items: center;
@@ -360,6 +375,11 @@ button, input, select, textarea {
 }
 
 .navbar__profile-link.navbar__link--active::after {
+  display: none;
+}
+
+.navbar__login-link::after,
+.navbar__signup-link::after {
   display: none;
 }
 
@@ -414,8 +434,19 @@ button, input, select, textarea {
   text-decoration: none;
 }
 
+.navbar__link:hover::after,
+.navbar__link:focus-visible::after {
+  transform: translateX(-50%) scaleX(1);
+  opacity: 0.5;
+}
+
+.navbar__link--active {
+  color: var(--savora-coral);
+}
+
 .navbar__link--active::after {
-  display: none;
+  transform: translateX(-50%) scaleX(1);
+  opacity: 1;
 }
 
 .navbar__cta {
