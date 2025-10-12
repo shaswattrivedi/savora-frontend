@@ -221,45 +221,50 @@ const RecipeDetailPage = () => {
         </article>
       </section>
 
-      <section className="panel">
-        <h2>Reviews</h2>
-        {recipe.isExternal ? (
-          <p className="empty-state">
-            Reviews aren&apos;t available for imported recipes yet, but you can still enjoy the steps straight from
-            Chef {externalChefName}.
-          </p>
-        ) : (
-          <>
-            <div className="reviews">
-              {recipe.reviews?.length ? (
-                recipe.reviews.map((review) => (
-                  <div key={review._id} className="reviews__item">
-                    <div className="reviews__header">
-                      <strong>{review.user?.name || "Savora Member"}</strong>
-                      <span>★ {review.rating}</span>
+      <section className="panel recipe-detail__card recipe-detail__card--reviews">
+        <div className="recipe-detail__card-header">
+          <h2>Reviews</h2>
+        </div>
+        <div className="recipe-detail__card-body recipe-detail__card-body--reviews">
+          {recipe.isExternal ? (
+            <p>
+              Reviews aren&apos;t available for imported recipes yet, but you can still enjoy the steps straight from Chef
+              {" "}
+              {externalChefName}.
+            </p>
+          ) : (
+            <>
+              <div className="reviews">
+                {recipe.reviews?.length ? (
+                  recipe.reviews.map((review) => (
+                    <div key={review._id} className="reviews__item">
+                      <div className="reviews__header">
+                        <strong>{review.user?.name || "Savora Member"}</strong>
+                        <span>★ {review.rating}</span>
+                      </div>
+                      <p>{review.comment}</p>
                     </div>
-                    <p>{review.comment}</p>
-                  </div>
-                ))
-              ) : (
-                <p>Be the first to review this recipe.</p>
-              )}
-            </div>
+                  ))
+                ) : (
+                  <p>Be the first to review this recipe.</p>
+                )}
+              </div>
 
-            <form className="review-form" onSubmit={handleReviewSubmit}>
-              <h3>Rate this recipe</h3>
-              <RatingStars value={rating} onChange={setRating} />
-              <textarea
-                placeholder="Share your tips or tweaks"
-                value={comment}
-                onChange={(event) => setComment(event.target.value)}
-              />
-              <button type="submit" className="btn btn--primary">
-                Submit review
-              </button>
-            </form>
-          </>
-        )}
+              <form className="review-form" onSubmit={handleReviewSubmit}>
+                <h3>Rate this recipe</h3>
+                <RatingStars value={rating} onChange={setRating} />
+                <textarea
+                  placeholder="Share your tips or tweaks"
+                  value={comment}
+                  onChange={(event) => setComment(event.target.value)}
+                />
+                <button type="submit" className="btn btn--primary">
+                  Submit review
+                </button>
+              </form>
+            </>
+          )}
+        </div>
       </section>
     </div>
   );
