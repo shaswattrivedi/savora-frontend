@@ -384,13 +384,13 @@
 
 .home-trending {
   display: grid;
-  gap: 1.4rem;
+  gap: 1rem;
 }
 
 .home-trending__list {
   display: grid;
-  gap: 1.2rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .home-guides {

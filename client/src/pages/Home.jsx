@@ -409,9 +409,6 @@ const HomePage = () => {
       <section className="section home-trending">
         <div className="home-section__header">
           <h2 className="home-section__title">Trending recipes today</h2>
-          <p className="home-section__subtitle">
-            What Savora cooks are bookmarking and reviewing right now.
-          </p>
         </div>
         {trendingRecipes.length ? (
           <div className="home-trending__list">
