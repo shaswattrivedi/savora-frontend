@@ -369,8 +369,8 @@ const RecipeDetailPage = () => {
           </div>
           <div className="recipe-detail__card-body">
             {recipe.isExternal ? (
-              <div className="recipe-detail__panel-content review-panel review-panel--message">
-                <p className="review-panel__intro">
+              <div className="recipe-detail__panel-content recipe-reviews__content recipe-reviews__content--message">
+                <p>
                   Reviews aren&apos;t available for imported recipes yet, but you can still enjoy every step curated by Chef {externalChefName}.
                 </p>
               </div>

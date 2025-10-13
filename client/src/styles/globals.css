@@ -1722,6 +1722,18 @@ button, input, select, textarea {
   color: rgba(28, 37, 65, 0.76);
 }
 
+.recipe-reviews__content--message {
+  align-items: center;
+  text-align: center;
+}
+
+.recipe-reviews__content--message > p {
+  font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+  line-height: 1.78;
+  color: var(--color-text);
+  max-width: 60ch;
+}
+
 .recipe-reviews__content .reviews {
   width: 100%;
 }
