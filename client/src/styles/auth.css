@@ -112,7 +112,7 @@
 .auth-footer {
   text-align: center;
   color: var(--color-muted);
-  font-size: 0.95rem;
+  font-size: 1.12rem;
 }
 
 .auth-footer a {
@@ -132,7 +132,7 @@
 
 .auth-links button,
 .auth-links a {
-  font-size: 0.95rem;
+  font-size: 1.08rem;
   color: var(--color-primary);
   font-weight: 600;
 }
