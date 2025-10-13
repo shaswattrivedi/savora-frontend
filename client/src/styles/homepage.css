@@ -50,7 +50,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 1.05rem;
+  font-size: 0.8rem;
 }
 
 .home-hero__title {
@@ -71,8 +71,8 @@
   margin: 0;
   width: min(420px, 100%);
   color: var(--color-text);
-  font-size: clamp(1.12rem, 2vw, 1.35rem);
-  line-height: 1.75;
+  font-size: clamp(0.95rem, 1.9vw, 1.1rem);
+  line-height: 1.6;
 }
 
 .home-hero__actions {
@@ -110,7 +110,7 @@
   flex: 1;
   border: none;
   background: transparent;
-  font-size: 1.12rem;
+  font-size: 0.95rem;
   padding: 0.45rem 0;
   color: var(--color-text);
 }
@@ -149,7 +149,7 @@
   align-items: center;
   font-weight: 600;
   color: var(--color-muted);
-  font-size: clamp(1.12rem, 2vw, 1.3rem);
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
 }
 
 .home-hero__media {
@@ -296,7 +296,7 @@
 .home-section__subtitle {
   margin: 0;
   color: var(--color-muted);
-  font-size: 1.12rem;
+  font-size: 0.95rem;
 }
 
 .home-collections__grid {
@@ -347,7 +347,7 @@
 }
 
 .home-collections__eyebrow {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 700;
@@ -362,7 +362,7 @@
 .home-collections__content p {
   margin: 0;
   color: rgba(255, 255, 255, 0.8);
-  font-size: 1.12rem;
+  font-size: 0.95rem;
 }
 
 .home-collections__cta {
@@ -450,7 +450,7 @@
 }
 
 .home-guides__meta {
-  font-size: 1.05rem;
+  font-size: 0.85rem;
   color: var(--color-muted);
   font-weight: 600;
 }
