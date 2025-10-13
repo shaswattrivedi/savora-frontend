@@ -973,6 +973,8 @@ button, input, select, textarea {
   text-decoration: none;
   color: inherit;
   box-shadow: 0 16px 32px rgba(28, 37, 65, 0.12);
+  width: min(100%, 360px);
+  margin: 0;
   min-height: 100%;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -1463,22 +1465,22 @@ button, input, select, textarea {
 .review-panel {
   position: relative;
   isolation: isolate;
+  --review-panel-block-width: min(100%, 1000px);
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
-  gap: clamp(1.2rem, 2.6vw, 1.8rem);
+  grid-template-columns: minmax(260px, 0.95fr) minmax(320px, 1.05fr);
+  gap: clamp(1.4rem, 3vw, 2rem);
   align-items: stretch;
+  padding: clamp(1.2rem, 2.8vw, 1.8rem);
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.96), rgba(255, 244, 242, 0.86)) padding-box,
+    linear-gradient(135deg, rgba(62, 180, 137, 0.22), rgba(255, 107, 107, 0.22)) border-box;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
 }
 
 .review-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    radial-gradient(circle at 20% 16%, rgba(255, 153, 153, 0.18), transparent 60%),
-    radial-gradient(circle at 82% 84%, rgba(62, 180, 137, 0.16), transparent 62%);
-  pointer-events: none;
-  z-index: 0;
+  content: none;
 }
 
 .review-panel__column {
@@ -1491,10 +1493,12 @@ button, input, select, textarea {
 
 .review-panel__column--overview {
   gap: clamp(1.1rem, 2.4vw, 1.7rem);
+  align-items: flex-start;
 }
 
 .review-panel__column--form {
   align-items: center;
+  justify-content: center;
 }
 
 .review-panel__intro {
@@ -1510,19 +1514,25 @@ button, input, select, textarea {
   padding: 0;
   display: grid;
   gap: clamp(1rem, 2.4vw, 1.35rem);
+  width: var(--review-panel-block-width);
 }
 
 .review-panel__item {
   position: relative;
   overflow: hidden;
-  padding: clamp(1.05rem, 2.5vw, 1.4rem) clamp(1.2rem, 2.8vw, 1.6rem);
+  width: var(--review-panel-block-width);
+  min-height: clamp(8.4rem, 22vw, 10rem);
+  padding: clamp(1.2rem, 2.8vw, 1.6rem) clamp(1.5rem, 3vw, 2rem);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.68);
   background:
-    linear-gradient(150deg, rgba(255, 214, 219, 0.8), rgba(255, 240, 238, 0.95)) padding-box;
+    linear-gradient(150deg, rgba(255, 214, 219, 0.86), rgba(255, 240, 238, 0.98)) padding-box;
   box-shadow:
-    0 22px 40px rgba(255, 107, 107, 0.14),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+    0 32px 60px rgba(255, 107, 107, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .review-panel__item::before {
@@ -1566,7 +1576,7 @@ button, input, select, textarea {
 
 .review-panel__comment {
   margin: 0;
-  font-size: clamp(1.02rem, 2.2vw, 1.2rem);
+  font-size: clamp(1.3rem, 2.2vw, 1.2rem);
   line-height: 1.68;
   color: rgba(28, 37, 65, 0.8);
 }
@@ -1586,17 +1596,18 @@ button, input, select, textarea {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  width: min(100%, 420px);
+  width: var(--review-panel-block-width);
+  margin: 0 auto;
   display: grid;
-  gap: clamp(1.05rem, 2.3vw, 1.6rem);
-  padding: clamp(1.2rem, 2.5vw, 1.7rem);
+  gap: clamp(1.15rem, 2.5vw, 1.75rem);
+  padding: clamp(1.35rem, 2.6vw, 2rem);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   background:
-    linear-gradient(150deg, rgba(255, 255, 255, 0.96), rgba(236, 255, 250, 0.92)) padding-box;
+    linear-gradient(145deg, rgba(234, 255, 245, 0.98), rgba(206, 247, 229, 0.9)) padding-box;
   box-shadow:
-    0 26px 44px rgba(62, 180, 137, 0.18),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.32);
+    0 34px 64px rgba(62, 180, 137, 0.24),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.34);
 }
 
 .review-panel__form::before {
@@ -1604,8 +1615,8 @@ button, input, select, textarea {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 22% 18%, rgba(62, 180, 137, 0.22), transparent 58%),
-    radial-gradient(circle at 80% 12%, rgba(255, 107, 107, 0.22), transparent 62%);
+    radial-gradient(circle at 20% 18%, rgba(153, 241, 206, 0.3), transparent 60%),
+    radial-gradient(circle at 82% 78%, rgba(122, 224, 187, 0.28), transparent 56%);
   pointer-events: none;
   z-index: 0;
 }
@@ -1617,7 +1628,7 @@ button, input, select, textarea {
 
 .review-panel__label {
   font-weight: 700;
-  font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+  font-size: clamp(1.4rem, 3vw, 1.75rem);
   color: var(--savora-navy);
 }
 
@@ -1628,8 +1639,8 @@ button, input, select, textarea {
 }
 
 .review-panel__stars .rating-stars {
-  gap: clamp(0.6rem, 1.6vw, 1rem);
-  font-size: clamp(2.4rem, 4vw, 3.2rem);
+  gap: clamp(0.65rem, 1.8vw, 1.15rem);
+  font-size: clamp(3rem, 5vw, 3.8rem);
 }
 
 .review-panel__stars .rating-stars__star {
@@ -1663,6 +1674,16 @@ button, input, select, textarea {
 
 .review-panel__submit {
   justify-self: center;
+  background: linear-gradient(135deg, #ff8a8a, #ff6b6b);
+  color: #fff;
+  box-shadow: 0 18px 32px rgba(255, 107, 107, 0.24);
+}
+
+.review-panel__submit:hover,
+.review-panel__submit:focus,
+.review-panel__submit:focus-visible {
+  background: linear-gradient(135deg, #ff9b9b, #ff7d7d);
+  color: #fff;
 }
 
 @media (max-width: 960px) {
