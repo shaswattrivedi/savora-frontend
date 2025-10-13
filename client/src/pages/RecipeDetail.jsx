@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import RatingStars from "../components/RatingStars.jsx";
+import "../styles/contact.css";
 import { apiRequest } from "../utils/api.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
@@ -217,6 +218,7 @@ const RecipeDetailPage = () => {
 
   const externalChefName = recipe.createdBy?.name || getMockChefName(recipe._id || recipe.title);
   const timeLabel = recipe.cookingTime ? `${recipe.cookingTime} mins` : recipe.cuisineType || recipe.category || "Recipe";
+  const reviewCount = recipe.reviews?.length || 0;
   const ratingLabel = typeof recipe.avgRating === "number" ? recipe.avgRating.toFixed(1) : "–";
   const categoryLabel =
     recipe.categoryTags?.length
@@ -235,6 +237,11 @@ const RecipeDetailPage = () => {
   const recipeImage =
     recipe.imageUrl ||
     getRecipeFallbackImage({ cuisine: recipe.cuisineType || recipe.cuisine, category: recipe.category, title: recipe.title });
+  const reviewIntro = recipe.isExternal
+    ? `Reviews aren't available for imported recipes yet, but you can still enjoy the steps from Chef ${externalChefName}.`
+    : reviewCount
+      ? "See what the Savora community is saying and add your voice."
+      : "Be the first to review this recipe.";
 
   return (
     <div className="page recipe-detail">
@@ -355,50 +362,64 @@ const RecipeDetailPage = () => {
         </article>
       </section>
 
-      <section className="panel recipe-detail__card recipe-detail__card--reviews">
-        <div className="recipe-detail__card-header">
-          <h2>Reviews</h2>
-        </div>
-        <div className="recipe-detail__card-body recipe-detail__card-body--reviews">
-          <div className="recipe-detail__panel-content recipe-reviews__content">
-            {recipe.isExternal ? (
-              <p>
-                Reviews aren&apos;t available for imported recipes yet, but you can still enjoy the steps straight from Chef {" "}
-                {externalChefName}.
-              </p>
-            ) : (
-              <>
-                <div className="reviews">
-                  {recipe.reviews?.length ? (
-                    recipe.reviews.map((review) => (
-                      <div key={review._id} className="reviews__item">
-                        <div className="reviews__header">
-                          <strong>{review.user?.name || "Savora Member"}</strong>
-                          <span>★ {review.rating}</span>
-                        </div>
-                        <p>{review.comment}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <p>Be the first to review this recipe.</p>
-                  )}
-                </div>
+      <section className="reviews-section" aria-labelledby="recipe-reviews-heading">
+        <div className="review-card contact-glass">
+          <h2 id="recipe-reviews-heading" className="contact-title review-card__title">Reviews</h2>
+          <p className="contact-desc review-card__desc">{reviewIntro}</p>
 
-                <form className="review-form" onSubmit={handleReviewSubmit}>
-                  <h3>Rate this recipe</h3>
-                  <RatingStars value={rating} onChange={setRating} />
+          {recipe.isExternal ? (
+            <p className="review-card__note">
+              Enjoy the step-by-step instructions while we work on enabling reviews for imported recipes.
+            </p>
+          ) : (
+            <>
+              {reviewCount ? (
+                <ul className="review-card__list">
+                  {recipe.reviews.map((review) => (
+                    <li key={review._id} className="review-card__item">
+                      <div className="review-card__item-header">
+                        <span className="review-card__author">{review.user?.name || "Savora Member"}</span>
+                        <span className="review-card__rating" aria-label={`Rated ${review.rating} out of 5`}>
+                          ★ {review.rating}
+                        </span>
+                      </div>
+                      {review.comment && <p className="review-card__comment">{review.comment}</p>}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="review-card__empty" role="status">
+                  <p>No reviews yet. Your tips could help the next cook!</p>
+                </div>
+              )}
+
+              <form className="contact-form review-card__form" onSubmit={handleReviewSubmit}>
+                <div className="form-group review-card__field">
+                  <label className="review-card__label" htmlFor="recipe-review-rating">
+                    Rate this recipe
+                  </label>
+                  <div className="review-card__stars" id="recipe-review-rating">
+                    <RatingStars value={rating} onChange={setRating} />
+                  </div>
+                </div>
+                <div className="form-group review-card__field">
+                  <label className="review-card__label" htmlFor="recipe-review-comment">
+                    Share your tips or tweaks
+                  </label>
                   <textarea
-                    placeholder="Share your tips or tweaks"
+                    id="recipe-review-comment"
+                    className="input-glass review-card__textarea"
+                    placeholder="What did you change or love about this recipe?"
                     value={comment}
                     onChange={(event) => setComment(event.target.value)}
                   />
-                  <button type="submit" className="btn btn--primary">
-                    Submit review
-                  </button>
-                </form>
-              </>
-            )}
-          </div>
+                </div>
+                <button type="submit" className="btn btn--primary contact-btn review-card__submit">
+                  Submit review
+                </button>
+              </form>
+            </>
+          )}
         </div>
       </section>
     </div>
