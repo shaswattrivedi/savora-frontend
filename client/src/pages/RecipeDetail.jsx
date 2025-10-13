@@ -237,12 +237,6 @@ const RecipeDetailPage = () => {
   const recipeImage =
     recipe.imageUrl ||
     getRecipeFallbackImage({ cuisine: recipe.cuisineType || recipe.cuisine, category: recipe.category, title: recipe.title });
-  const reviewIntro = recipe.isExternal
-    ? `Reviews aren't available for imported recipes yet, but you can still enjoy the steps from Chef ${externalChefName}.`
-    : reviewCount
-      ? "See what the Savora community is saying and add your voice."
-      : "Be the first to review this recipe.";
-
   return (
     <div className="page recipe-detail">
       <header className="home-hero recipe-detail__hero">
@@ -377,20 +371,28 @@ const RecipeDetailPage = () => {
             ) : (
               <div className="recipe-detail__panel-content review-panel">
                 <div className="review-panel__column review-panel__column--overview">
-                  <p className="review-panel__intro">{reviewIntro}</p>
                   {reviewCount ? (
                     <ul className="review-panel__list">
-                      {recipe.reviews.map((review) => (
-                        <li key={review._id} className="review-panel__item">
-                          <div className="review-panel__item-header">
-                            <span className="review-panel__author">{review.user?.name || "Savora Member"}</span>
-                            <span className="review-panel__rating" aria-label={`Rated ${review.rating} out of 5`}>
-                              ★ {review.rating}
-                            </span>
-                          </div>
-                          {review.comment && <p className="review-panel__comment">{review.comment}</p>}
-                        </li>
-                      ))}
+                      {recipe.reviews.map((review) => {
+                        const normalizedRating = Math.max(
+                          0,
+                          Math.round(Number.isFinite(Number(review.rating)) ? Number(review.rating) : 0)
+                        );
+
+                        return (
+                          <li key={review._id} className="review-panel__item">
+                            <div className="review-panel__item-header">
+                              <span className="review-panel__author">{review.user?.name || "Savora Member"}</span>
+                            </div>
+                            {normalizedRating > 0 && (
+                              <span className="review-panel__item-rating" aria-label={`Rated ${normalizedRating} out of 5`}>
+                                {"★".repeat(normalizedRating)}
+                              </span>
+                            )}
+                            {review.comment && <p className="review-panel__comment">{review.comment}</p>}
+                          </li>
+                        );
+                      })}
                     </ul>
                   ) : (
                     <div className="review-panel__empty" role="status">
