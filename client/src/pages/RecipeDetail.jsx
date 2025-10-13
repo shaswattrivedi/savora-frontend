@@ -363,64 +363,73 @@ const RecipeDetailPage = () => {
       </section>
 
       <section className="reviews-section" aria-labelledby="recipe-reviews-heading">
-        <div className="review-card contact-glass">
-          <h2 id="recipe-reviews-heading" className="contact-title review-card__title">Reviews</h2>
-          <p className="contact-desc review-card__desc">{reviewIntro}</p>
+        <article className="panel recipe-detail__card recipe-detail__card--reviews">
+          <div className="recipe-detail__card-header">
+            <h2 id="recipe-reviews-heading">Reviews</h2>
+          </div>
+          <div className="recipe-detail__card-body">
+            {recipe.isExternal ? (
+              <div className="recipe-detail__panel-content review-panel review-panel--message">
+                <p className="review-panel__intro">
+                  Reviews aren&apos;t available for imported recipes yet, but you can still enjoy every step curated by Chef {externalChefName}.
+                </p>
+              </div>
+            ) : (
+              <div className="recipe-detail__panel-content review-panel">
+                <div className="review-panel__column review-panel__column--overview">
+                  <p className="review-panel__intro">{reviewIntro}</p>
+                  {reviewCount ? (
+                    <ul className="review-panel__list">
+                      {recipe.reviews.map((review) => (
+                        <li key={review._id} className="review-panel__item">
+                          <div className="review-panel__item-header">
+                            <span className="review-panel__author">{review.user?.name || "Savora Member"}</span>
+                            <span className="review-panel__rating" aria-label={`Rated ${review.rating} out of 5`}>
+                              ★ {review.rating}
+                            </span>
+                          </div>
+                          {review.comment && <p className="review-panel__comment">{review.comment}</p>}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="review-panel__empty" role="status">
+                      <p>No reviews yet. Your tips could help the next cook!</p>
+                    </div>
+                  )}
+                </div>
 
-          {recipe.isExternal ? (
-            <p className="review-card__note">
-              Enjoy the step-by-step instructions while we work on enabling reviews for imported recipes.
-            </p>
-          ) : (
-            <>
-              {reviewCount ? (
-                <ul className="review-card__list">
-                  {recipe.reviews.map((review) => (
-                    <li key={review._id} className="review-card__item">
-                      <div className="review-card__item-header">
-                        <span className="review-card__author">{review.user?.name || "Savora Member"}</span>
-                        <span className="review-card__rating" aria-label={`Rated ${review.rating} out of 5`}>
-                          ★ {review.rating}
-                        </span>
+                <div className="review-panel__column review-panel__column--form">
+                  <form className="contact-form review-panel__form" onSubmit={handleReviewSubmit}>
+                    <div className="form-group">
+                      <label className="review-panel__label" htmlFor="recipe-review-rating">
+                        Rate this recipe
+                      </label>
+                      <div className="review-panel__stars" id="recipe-review-rating">
+                        <RatingStars value={rating} onChange={setRating} />
                       </div>
-                      {review.comment && <p className="review-card__comment">{review.comment}</p>}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <div className="review-card__empty" role="status">
-                  <p>No reviews yet. Your tips could help the next cook!</p>
+                    </div>
+                    <div className="form-group">
+                      <label className="review-panel__label" htmlFor="recipe-review-comment">
+                        Share your tips or tweaks
+                      </label>
+                      <textarea
+                        id="recipe-review-comment"
+                        className="input-glass review-panel__textarea"
+                        placeholder="What did you change or love about this recipe?"
+                        value={comment}
+                        onChange={(event) => setComment(event.target.value)}
+                      />
+                    </div>
+                    <button type="submit" className="btn btn--primary contact-btn review-panel__submit">
+                      Submit review
+                    </button>
+                  </form>
                 </div>
-              )}
-
-              <form className="contact-form review-card__form" onSubmit={handleReviewSubmit}>
-                <div className="form-group review-card__field">
-                  <label className="review-card__label" htmlFor="recipe-review-rating">
-                    Rate this recipe
-                  </label>
-                  <div className="review-card__stars" id="recipe-review-rating">
-                    <RatingStars value={rating} onChange={setRating} />
-                  </div>
-                </div>
-                <div className="form-group review-card__field">
-                  <label className="review-card__label" htmlFor="recipe-review-comment">
-                    Share your tips or tweaks
-                  </label>
-                  <textarea
-                    id="recipe-review-comment"
-                    className="input-glass review-card__textarea"
-                    placeholder="What did you change or love about this recipe?"
-                    value={comment}
-                    onChange={(event) => setComment(event.target.value)}
-                  />
-                </div>
-                <button type="submit" className="btn btn--primary contact-btn review-card__submit">
-                  Submit review
-                </button>
-              </form>
-            </>
-          )}
-        </div>
+              </div>
+            )}
+          </div>
+        </article>
       </section>
     </div>
   );
