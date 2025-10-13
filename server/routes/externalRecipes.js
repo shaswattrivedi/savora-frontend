@@ -1,7 +1,9 @@
 import { Router } from "express";
+import nodeFetch from "node-fetch";
 
 const router = Router();
 const THE_MEAL_DB_BASE_URL = "https://www.themealdb.com/api/json/v1/1";
+const fetchApi = globalThis.fetch ?? nodeFetch;
 
 const createExternalError = (message, status = 500) => {
   const error = new Error(message);
@@ -44,7 +46,7 @@ router.get("/recipes", async (req, res, next) => {
   }
 
   try {
-    const response = await fetch(
+    const response = await fetchApi(
       `${THE_MEAL_DB_BASE_URL}/search.php?s=${encodeURIComponent(search)}`
     );
 
@@ -93,7 +95,7 @@ router.get("/recipes/:id", async (req, res, next) => {
   }
 
   try {
-    const response = await fetch(
+    const response = await fetchApi(
       `${THE_MEAL_DB_BASE_URL}/lookup.php?i=${encodeURIComponent(id)}`
     );
 
