@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import RatingStars from "../components/RatingStars.jsx";
 import { apiRequest } from "../utils/api.js";
 import { useAuth } from "../hooks/useAuth.js";
@@ -33,7 +33,8 @@ const transformExternalRecipeDetail = (recipe) => {
 
 const RecipeDetailPage = () => {
   const { id } = useParams();
-  const { user, token, setUser } = useAuth();
+  const navigate = useNavigate();
+  const { user, token, refreshProfile } = useAuth();
   const { addToast } = useToast();
 
   const [recipe, setRecipe] = useState(null);
@@ -160,12 +161,11 @@ const RecipeDetailPage = () => {
     }
 
     try {
+      const wasFavourite = isFavourite;
       const response = await apiRequest(`/recipes/${id}/bookmark`, {
         method: "POST",
         token,
       });
-
-      setIsFavourite((prev) => !prev);
 
       if (response?.bookmarksCount !== undefined) {
         setRecipe((previous) =>
@@ -173,31 +173,23 @@ const RecipeDetailPage = () => {
         );
       }
 
-      const currentFavorites = user.favorites || [];
-      const favouriteIds = currentFavorites
-        .map((fav) => (typeof fav === "string" ? fav : fav?._id))
-        .filter(Boolean);
-      const hasFavourite = favouriteIds.includes(recipe._id);
-
-      let nextFavorites;
-      if (hasFavourite) {
-        nextFavorites = currentFavorites.filter(
-          (fav) => (typeof fav === "string" ? fav : fav?._id) !== recipe._id
-        );
-      } else {
-        nextFavorites = [
-          ...currentFavorites,
-          {
-            _id: recipe._id,
-            title: recipe.title,
-            cuisineType: recipe.cuisineType,
-            avgRating: recipe.avgRating,
-            imageUrl: recipe.imageUrl,
-          },
-        ];
+      let nowFavourite = !wasFavourite;
+      try {
+        const updatedUser = await refreshProfile();
+        const updatedFavourites = updatedUser?.favorites || [];
+        nowFavourite = updatedFavourites
+          .map((fav) => (typeof fav === "string" ? fav : fav?._id))
+          .filter(Boolean)
+          .includes(recipe._id);
+      } catch (profileError) {
+        console.error("Failed to refresh profile after bookmarking", profileError);
       }
 
-      setUser({ ...user, favorites: nextFavorites });
+      setIsFavourite(nowFavourite);
+
+      if (!wasFavourite && nowFavourite) {
+        navigate("/profile?tab=favorites");
+      }
 
       if (response?.message) {
         addToast(response.message, "success");

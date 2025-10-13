@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import ProfileCard from "../components/ProfileCard.jsx";
 import Tabs from "../components/Tabs.jsx";
 import RecipeGrid from "../components/RecipeGrid.jsx";
@@ -7,15 +8,21 @@ import { useAuth } from "../hooks/useAuth.js";
 import { useToast } from "../hooks/useToast.js";
 import { apiRequest } from "../utils/api.js";
 
+const ALLOWED_PROFILE_TABS = ["recipes", "favorites"];
+
 const ProfilePage = () => {
   const { user, token, refreshProfile, updateProfile } = useAuth();
   const { addToast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [profile, setProfile] = useState(user);
   const [myRecipes, setMyRecipes] = useState([]);
-  const [activeTab, setActiveTab] = useState("recipes");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editForm, setEditForm] = useState({ name: "", bio: "", avatarUrl: "" });
+  const [activeTab, setActiveTab] = useState(() => {
+    const tabParam = searchParams.get("tab");
+    return ALLOWED_PROFILE_TABS.includes(tabParam) ? tabParam : "recipes";
+  });
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -42,6 +49,27 @@ const ProfilePage = () => {
   useEffect(() => {
     setProfile(user);
   }, [user]);
+
+  useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    const nextTab = ALLOWED_PROFILE_TABS.includes(tabParam) ? tabParam : "recipes";
+    if (nextTab !== activeTab) {
+      setActiveTab(nextTab);
+    }
+  }, [searchParams, activeTab]);
+
+  const handleTabChange = (nextTab) => {
+    const safeTab = ALLOWED_PROFILE_TABS.includes(nextTab) ? nextTab : "recipes";
+    setActiveTab(safeTab);
+
+    const params = new URLSearchParams(searchParams);
+    if (safeTab === "recipes") {
+      params.delete("tab");
+    } else {
+      params.set("tab", safeTab);
+    }
+    setSearchParams(params);
+  };
 
   const handleEditChange = (event) => {
     const { name, value } = event.target;
@@ -74,13 +102,15 @@ const ProfilePage = () => {
           { value: "favorites", label: "Favorites" },
         ]}
         active={activeTab}
-        onChange={setActiveTab}
+        onChange={handleTabChange}
       />
 
       {activeTab === "recipes" ? (
         <RecipeGrid recipes={myRecipes} />
       ) : (
-        <RecipeGrid recipes={profile.favorites || []} />
+        <div id="favorites">
+          <RecipeGrid recipes={profile.favorites || []} />
+        </div>
       )}
 
       <Modal open={isModalOpen} title="Edit profile" onClose={() => setIsModalOpen(false)}>
