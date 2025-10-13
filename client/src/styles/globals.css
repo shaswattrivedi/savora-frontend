@@ -278,6 +278,22 @@ button, input, select, textarea {
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--savora-coral);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.navbar__logo-icon {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar__logo-icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .navbar__tagline {

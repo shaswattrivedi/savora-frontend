@@ -170,7 +170,28 @@ const Navbar = () => {
       <div className="navbar__top">
         <div className="navbar__brand">
           <Link to="/">
-            <span className="navbar__logo">Savora</span>
+            <span className="navbar__logo">
+              Savora
+              <span className="navbar__logo-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                  <path
+                    d="M14.5 3.5c-3.59 0-6.5 2.91-6.5 6.5 0 2.7 1.62 5.03 3.9 5.98l1.6.67V27a2 2 0 0 0 4 0V16.65l1.6-.67c2.28-.95 3.9-3.28 3.9-5.98 0-3.59-2.91-6.5-6.5-6.5z"
+                    fill="url(#spoon-bowl)"
+                  />
+                  <rect x="14" y="16.5" width="4" height="12.5" rx="1.4" fill="url(#spoon-handle)" />
+                  <defs>
+                    <linearGradient id="spoon-bowl" x1="8" x2="24" y1="5" y2="18" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="#ff8282" />
+                      <stop offset="1" stopColor="#ff6b6b" />
+                    </linearGradient>
+                    <linearGradient id="spoon-handle" x1="14" x2="18" y1="16.5" y2="29" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="#ff6b6b" />
+                      <stop offset="1" stopColor="#ff9a8d" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>
+            </span>
           </Link>
         </div>
 
