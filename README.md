@@ -95,14 +95,6 @@ Refreshing the page will reseed the demo data.
 
 - External recipes are now bundled with the frontend mock data—no network calls required—while staying faithful to the original Figma handoff.
 
-## 🧪 Testing & Quality
-
-- Frontend form validation covers empty fields, email format, password length
-- Reusable toast notifications provide immediate feedback
-- Local mock API mirrors server responses so you can still exercise flows end-to-end
-
-Add your own Jest or Cypress suites on top of this scaffold as needed.
-
 ## 📄 License
 
 This project is provided for academic use in the FLEXI mini project. Feel free to adapt it with attribution.
